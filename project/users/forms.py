@@ -16,14 +16,12 @@ class UserCreation(UserCreationForm):
             return submitted_data
         raise forms.ValidationError('You must register using a @doradigital.pl address')
 
-
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('email',)
 
 
 class UserChange(UserChangeForm):
-
     class Meta:
         model = User
         fields = ('username', 'email')
