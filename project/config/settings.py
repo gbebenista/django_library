@@ -121,3 +121,9 @@ LOGOUT_REDIRECT_URL = 'home'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "users/sent_emails")
+
+AUTHENTICATION_BACKENDS = (
+    'project.users.backends.LoginByEmailOrUsername',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
