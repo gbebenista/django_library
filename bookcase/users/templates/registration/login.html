@@ -5,14 +5,16 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<div class="shadow bg-white rounded p-5 m-auto w-50 h-50">
+<div class="shadow bg-white rounded p-5 m-auto w-50">
   <h2 class="text-center font-weight-light">Login</h2>
   <form method="post">
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="btn btn-primary">Login</button>
+    <span class="m-3"><a href="{% url 'password_reset' %}">Forgot password?</a></span>
   </form>
+  <h5 class="text-center font-weight-light pt-5">Are you new here? Create an <a href="{% url 'register' %}">account</a>!</h5>
 </div>
 
-  <h4 class="text-center font-weight-light pt-5">Are you new here? Create an <a href="{% url 'register' %}">account</a>!</h4>
+
 {% endblock %}

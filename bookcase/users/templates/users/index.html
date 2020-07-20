@@ -8,18 +8,12 @@
     <meta charset="UTF-8">
     <title>Bookcase</title>
 </head>
-<body class="bg-light m-auto">
-    <header class="page-header text-light text-center display-4 shadow p-5 mb-5 bg-secondary ">
-            <p>Bookcase</p>
-    </header>
-    <main class="container min-vh-100">
+<body class="bg-light m-auto ">
+
+    <main class="container min-vh-100 d-flex flex-wrap align-content-center">
         {% block content %}
         {% endblock %}
     </main>
-    <footer class="page-footer bg-dark text-light font-weight-light mt-5">
-        <div class="container text-center p-3 ">
-            <h5 class="font-weight-light">2020 Grzegorz Bębenista</h5>
-        </div>
-    </footer>
+
 </body>
 </html>

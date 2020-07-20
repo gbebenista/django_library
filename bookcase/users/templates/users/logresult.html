@@ -6,14 +6,13 @@
 {% if user.is_authenticated %}
 <div class="container-fluid text-center h2 p-5 font-weight-light">
   <p class="text-success">Hi {{ user.username }}!</p>
-  <p><a href="{% url 'logout' %}" class="badge badge-info">logout</a></p>
-  <p><a href="{% url 'password_reset' %}" class="badge badge-info">reset password</a></p>
+  <p><a href="{% url 'logout' %}" class="badge badge-info">Logout</a></p>
 </div>
 
 {% else %}
-<div class="text-center p-5">
+<div class="container-fluid text-center p-5">
   <p class="text-info h2 font-weight-light">You have been succesfully logged out</p>
-  <p class="h1"><a href="{% url 'login' %}" class="badge badge-info">login</a></p>
+  <p class="h1"><a href="{% url 'login' %}" class="badge badge-info">Back to main page</a></p>
 </div>
 
 {% endif %}
