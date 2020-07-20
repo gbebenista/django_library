@@ -10,5 +10,5 @@ class UserAdministrator(UserAdmin):
     model = User
     list_display = ['email', 'username', ]
 
-
+admin.site.unregister(User)
 admin.site.register(User, UserAdministrator)

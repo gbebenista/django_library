@@ -4,25 +4,19 @@
     {% load bootstrap4 %}
     {% bootstrap_css %}
 
-    {% load static %}
-
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-
 
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Bookcase</title>
 </head>
-<body>
-    <header class="page-header text-muted display-4">
-        <div class="shadow-sm p-4 mb-4 bg-light text-center">
-            <p>Biblioteka</p>
-        </div>
+<body class="bg-light m-auto">
+    <header class="page-header text-light text-center display-4 shadow p-5 mb-5 bg-secondary ">
+            <p>Bookcase</p>
     </header>
     <main class="container min-vh-100">
         {% block content %}
         {% endblock %}
     </main>
-    <footer class="page-footer bg-dark text-light font-weight-light">
+    <footer class="page-footer bg-dark text-light font-weight-light mt-5">
         <div class="container text-center p-3 ">
             <h5 class="font-weight-light">2020 Grzegorz Bębenista</h5>
         </div>
