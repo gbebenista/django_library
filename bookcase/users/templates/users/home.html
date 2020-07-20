@@ -1,15 +1,21 @@
-{% extends 'index.html' %}
+{% extends 'users/index.html' %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">logout</a></p>
-  <p><a href="{% url 'password_reset' %}">reset password</a></p>
+<div class="container-fluid text-center h2 p-5 font-weight-light">
+  <p class="text-success">Hi {{ user.username }}!</p>
+  <p><a href="{% url 'logout' %}" class="badge badge-info">logout</a></p>
+  <p><a href="{% url 'password_reset' %}" class="badge badge-info">reset password</a></p>
+</div>
+
 {% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">login</a> |
-  <a href="{% url 'register' %}">signup</a>
+<div class="container-fluid text-center h2 p-5 font-weight-light">
+  <p class="text-info">You are not logged in</p>
+    <a href="{% url 'login' %}" class="badge badge-info">login</a>
+    <a href="{% url 'register' %}" class="badge badge-info">signup</a>
+</div>
+
 {% endif %}
 {% endblock %}

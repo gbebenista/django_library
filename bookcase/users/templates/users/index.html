@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
+
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-    <main>
+    <header class="page-header text-muted display-4">
+        <div class="shadow-sm p-4 mb-4 bg-light text-center">
+            <p>Biblioteka</p>
+        </div>
+    </header>
+    <main class="container min-vh-100">
         {% block content %}
         {% endblock %}
     </main>
+    <footer class="page-footer bg-dark text-light font-weight-light">
+        <div class="container text-center p-3 ">
+            <h5 class="font-weight-light">2020 Grzegorz Bębenista</h5>
+        </div>
+    </footer>
 </body>
 </html>
