@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap4',
+    'bootstrap',
     'crispy_forms',
 ]
 
@@ -120,7 +120,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'logresult'
-LOGOUT_REDIRECT_URL = 'logresult'
+LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "users/sent_emails")

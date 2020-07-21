@@ -6,14 +6,21 @@
 
 {% block content %}
 <div class="shadow bg-white rounded p-5 m-auto w-50">
-  <h2 class="text-center font-weight-light">Login</h2>
-  <form method="post">
+  <h2 class="text-center font-weight-light m-2">Login</h2>
+  <form method="post" class="m-auto">
     {% csrf_token %}
-    {{ form|crispy }}
+    <div class="form-group">
+      <label for="id_username" class="h5 font-weight-light">Username:</label>
+      <input type="text" name="username" autofocus="" required="" id="id_username" class="form-control" placeholder="Login">
+    </div>
+    <div class="form-group">
+      <label for="id_password" class="h5 font-weight-light">Password:</label>
+      <input type="password" name="password" required="" id="id_password" class="form-control" placeholder="Password">
+    </div>
     <button type="submit" class="btn btn-primary">Login</button>
     <span class="m-3"><a href="{% url 'password_reset' %}">Forgot password?</a></span>
   </form>
-  <h5 class="text-center font-weight-light pt-5">Are you new here? Create an <a href="{% url 'register' %}">account</a>!</h5>
+  <h5 class="text-center font-weight-light pt-4">Are you new here? Create an <a href="{% url 'register' %}">account</a>!</h5>
 </div>
 
 
