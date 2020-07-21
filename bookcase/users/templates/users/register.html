@@ -7,7 +7,7 @@
 {% block content %}
 <div class="shadow bg-white rounded p-4 m-auto w-50">
   <h2 class="text-center font-weight-light">Sign up</h2>
-<form method="post">
+<form method="post" class="font-weight-light">
   {% csrf_token %}
   {{ form|crispy }}
   <button type="submit" class="btn btn-primary">Sign up</button>
