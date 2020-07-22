@@ -9,12 +9,6 @@
   <h2 class="text-center font-weight-light mb-4">Login</h2>
   <form method="post">
     {% csrf_token %}
-<!-- <div class="form-group">-->
-<!--   {% if form.errors %}-->
-<!--      {% for error in form.non_field_errors %}-->
-<!--        <div class="alert alert-danger">{{ error }}</div>-->
-<!--      {% endfor %}-->
-<!--    {% endif %}-->
     {% crispy form %}
   </form>
   <h5 class="text-center font-weight-light pt-4">Are you new here? Create an <a href="{% url 'register' %}">account</a>!</h5>
