@@ -1,13 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.core.validators import EmailValidator
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django import forms
+from .models import CustomUser
 
 
 class UserCreation(UserCreationForm):
-    email = forms.CharField()
 
     def clean_email(self):
         submitted_data = self.cleaned_data.get('email')
@@ -16,12 +13,26 @@ class UserCreation(UserCreationForm):
             return submitted_data
         raise forms.ValidationError('You must register using a @doradigital.pl address')
 
+    def save(self, commit=True):
+
+        user = CustomUser.objects.create_user(
+            self.cleaned_data['email'],
+            self.cleaned_data['password1']
+        )
+        return user
+
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('email',)
 
 
 class UserChange(UserChangeForm):
     class Meta:
-        model = User
-        fields = ('username', 'email')
+        model = CustomUser
+        fields = ('email',)
+
+
+class UserLogin(AuthenticationForm):
+
+    class Meta:
+        model = CustomUser
