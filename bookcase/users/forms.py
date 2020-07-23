@@ -46,7 +46,4 @@ class UserLogin(AuthenticationForm):
         self.helper.form_show_labels = False
         self.helper.layout = Layout(Field(PrependedText('username', '<i class="fa fa-user"></i>', placeholder="Username")),
                                     Field(PrependedText('password', '<i class="fa fa-lock"></i>', placeholder="Password")),
-                                    Submit('submit', 'Login'),
-                                    HTML("<span class=\"m-2\"><a href=\"{% url 'password_reset' %}\">Forgot password?</a></span>"))
-
-
+                                    Submit('submit', 'Login'),)
