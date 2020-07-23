@@ -16,16 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import TemplateView
-from django.contrib.auth import views
 from users.views import ViewLogin
 
 urlpatterns = [
-    path('', ViewLogin.as_view(), name='login'),
+    path('', TemplateView.as_view(template_name='users/logresult.html'), name='logresult'),
     path('admin/', admin.site.urls),
-    path('signup/', include('users.urls')),
-    path('password-reset/', views.PasswordResetView.as_view(), name="password_reset"),
-    path('password-reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('password-reset-confirm/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(),name='password_reset_confirm'),
-    path('password-reset-complete/', views.PasswordResetCompleteView.as_view(),name='password_reset_complete'),
-    path('logresult/', TemplateView.as_view(template_name='users/logresult.html'), name='logresult')
+    path('users/', include('users.urls')),
+
 ]
