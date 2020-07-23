@@ -1,4 +1,4 @@
-from django.contrib.auth.views import LoginView, PasswordResetView
+from django.contrib.auth.views import LoginView, PasswordResetView, LogoutView
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from .forms import UserCreation, UserLogin
@@ -14,4 +14,3 @@ class ViewLogin(LoginView):
     form_class = UserLogin
     succes_url = reverse_lazy('logresult')
     template_name = 'registration/login.html'
-
