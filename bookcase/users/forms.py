@@ -1,8 +1,8 @@
-from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from crispy_forms.bootstrap import PrependedText
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, Submit, HTML
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
-from django.core.validators import EmailValidator
 from django import forms
 
 
@@ -18,10 +18,25 @@ class UserCreation(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email',)
+        fields = ('username', 'email',)
 
 
 class UserChange(UserChangeForm):
     class Meta:
         model = User
         fields = ('username', 'email')
+
+
+class UserLogin(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super(UserLogin, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.layout = Layout(Field(PrependedText('username', '<i class="fa fa-user"></i>', placeholder="Username")),
+                                    Field(PrependedText('password', '<i class="fa fa-lock"></i>', placeholder="Password")),
+                                    Submit('submit', 'Login'),
+                                    HTML("<span class=\"m-2\"><a href=\"{% url 'password_reset' %}\">Forgot password?</a></span>"))
+
+
+    class Meta:
+        model = User

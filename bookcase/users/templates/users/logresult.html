@@ -1,0 +1,19 @@
+{% extends 'users/index.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="container-fluid text-center h2 p-5 font-weight-light">
+  <p class="text-success">Hi {{ user.username }}!</p>
+  <p><a href="{% url 'login' %}" class="badge badge-info">Logout</a></p>
+</div>
+
+{% else %}
+<div class="container-fluid text-center p-5">
+  <p class="text-info h2 font-weight-light">You have been succesfully logged out</p>
+  <p class="h1"><a href="{% url 'login' %}" class="badge badge-info">Back to main page</a></p>
+</div>
+
+{% endif %}
+{% endblock %}
