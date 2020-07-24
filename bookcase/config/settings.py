@@ -121,7 +121,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
 
-LOGIN_REDIRECT_URL = 'logresult'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
@@ -129,7 +129,8 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, "users/sent_emails")
 
 AUTHENTICATION_BACKENDS = (
     'bookcase.users.backends.LoginByEmailOrUsername',
-    'django.contrib.auth.backends.ModelBackend'
+    'django.contrib.auth.backends.ModelBackend',
 )
 
+AUTH_USER_MODEL = 'users.CustomUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
