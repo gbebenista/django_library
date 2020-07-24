@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(str(Path(__file__).resolve().parent.parent), 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bookcase',
+        'USER': 'bookcase',
+        'PASSWORD': 'bookcase',
+        'HOST': '192.168.33.10',
+        'PORT': '5432',
     }
 }
 
