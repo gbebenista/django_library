@@ -121,7 +121,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
 
-LOGIN_REDIRECT_URL = 'logresult'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
