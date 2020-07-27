@@ -8,7 +8,7 @@ Author | Title | Publisher | Tags
 <hr />
 <div>
     {% for object in object_list %}
-    <p>{{ object.author }} | {{ object.title }} | {{ object.publisher }} |  {% for tag in object.tags.all %} {{tag}}, {% endfor %}</p>
+    <p>{{ object.author }} | {{ object.title }} | {{ object.publisher }} | {% for tag in object.tags.all %} {{tag}}, {% endfor %} </p>
     <p><a href="{% url 'deletebook' object.id %}">Delete</a> | <a href="{% url 'updatebook' object.id %}">Edit</a></p>
     <hr/>
     {% empty %}
