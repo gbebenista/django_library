@@ -1,14 +1,13 @@
 {% extends 'books/base.html' %}
 
-{% block title %}Books list{% endblock %}
+{% block title %}Serach book result{% endblock %}
 {% block content %}
-<a href="{% url 'addbook' %}">ADD BOOK</a>
-<hr/>
+<h3>Search result</h3>
 Author | Title | Publisher | Tags
 <hr />
 <div>
     {% for object in page_obj %}
-    <p><a href="{% url 'detailbook' object.id %}">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a></p>
+    <p><a href="{% url 'detailbook' object.id %}">{{ object.author }} | {{ object.title }} | {{ object.publisher }} | {% for tag in object.tags.all %} {{tag}}, {% endfor %}</a></p>
     <p><a href="{% url 'deletebook' object.id %}">Delete</a> | <a href="{% url 'updatebook' object.id %}">Edit</a></p>
     <hr/>
     {% empty %}

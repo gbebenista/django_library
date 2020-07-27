@@ -22,6 +22,7 @@ class Book(models.Model):
     tags = TaggableManager(through=UUIDTaggedItem)
 
 
+
 # class BookcaseCart(models.Model):
 #     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 #     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

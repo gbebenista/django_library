@@ -10,8 +10,16 @@
 <body class="bg-light m-auto">
     <header class="p-4 bg-info m-auto text-white">
             <h5 class="font-weight-light ">Bookcase panel</h5>
-            <a href="{% url 'bookslist' %}" class=" text-white">Bookslist</a>
-            <a href="{% url 'logout' %}" class="text-white">Logout</a>
+            <p>
+                <a href="{% url 'bookslist' %}" class=" text-white">Bookslist</a>
+                <a href="{% url 'logout' %}" class="text-white">Logout</a>
+            </p>
+            <p>
+                <form action="{% url 'searchbook' %}" method="get">
+                    <input name="q" type="text" placeholder="Search book...">
+                    <button type="submit">Search</button>
+                </form>
+            </p>
     </header>
     <main>
         {% block content %}

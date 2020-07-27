@@ -1,5 +1,6 @@
+from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
 from books.forms import CreateBookForm
 from books.models import Book
@@ -8,6 +9,7 @@ from books.models import Book
 class ListBookView(ListView):
     model = Book
     template_name = 'books/booklist.html'
+    paginate_by = 5
 
 
 class CreationBookView(CreateView):
@@ -18,7 +20,6 @@ class CreationBookView(CreateView):
 
 class DeleteBookView(DeleteView):
     model = Book
-    success_url = reverse_lazy('bookslist')
     template_name = 'books/deletebook.html'
 
 
@@ -27,3 +28,23 @@ class UpdateBookView(UpdateView):
     success_url = reverse_lazy('bookslist')
     fields = ['author', 'title', 'publisher', 'tags', ]
     template_name = 'books/updatebook.html'
+
+
+class SearchBookView(ListView):
+    model = Book
+    fields = ['author', 'title', 'publisher', 'tags', ]
+    template_name = 'books/searchbook.html'
+    paginate_by = 5
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Book.objects.filter(
+            Q(title__icontains=query)
+        )
+        return object_list
+
+
+class DetailBookView(DetailView):
+    model = Book
+    success_url = reverse_lazy('bookslist')
+    template_name = 'books/detailbook.html'
