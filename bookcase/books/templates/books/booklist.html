@@ -9,7 +9,7 @@ Author | Title | Publisher | Tags
 <div>
     {% for object in page_obj %}
     <p><a href="{% url 'detailbook' object.id %}">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a></p>
-    <p><a href="{% url 'deletebook' object.id %}">Delete</a> | <a href="{% url 'updatebook' object.id %}">Edit</a></p>
+    <p>{% if perms.books.delete_book %}<a href="{% url 'deletebook' object.id %}">Delete</a>{% endif %}| {% if perms.books.change_book %}<a href="{% url 'updatebook' object.id %}">Edit</a>{% endif %}</p>
     <hr/>
     {% empty %}
     <p>No objects yet.</p>

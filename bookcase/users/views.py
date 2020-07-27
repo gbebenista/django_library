@@ -18,8 +18,3 @@ class ViewLogin(LoginView):
     form_class = UserLogin
     succes_url = reverse_lazy('bookslist')
     template_name = 'registration/login.html'
-
-
-class HomeView(LoginRequiredMixin, TemplateView):
-    login_url = reverse_lazy('login')
-    template_name = 'books/booklist.html'

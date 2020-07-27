@@ -1,6 +1,7 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
 
 from books.forms import CreateBookForm
 from books.models import Book
@@ -48,3 +49,8 @@ class DetailBookView(DetailView):
     model = Book
     success_url = reverse_lazy('bookslist')
     template_name = 'books/detailbook.html'
+
+
+class HomeView(LoginRequiredMixin, TemplateView):
+    login_url = reverse_lazy('login')
+    template_name = 'books/booklist.html'
