@@ -8,9 +8,10 @@
     <title>Title</title>
 </head>
 <body class="bg-light m-auto">
-    <header class="p-4 bg-info m-auto">
-            <h5 class="font-weight-light text-white float-left">Bookcase panel</h5>
-            <a href="{% url 'logout' %}" class="badge badge-info float-right display-4">Logout</a>
+    <header class="p-4 bg-info m-auto text-white">
+            <h5 class="font-weight-light ">Bookcase panel</h5>
+            <a href="{% url 'bookslist' %}" class=" text-white">Bookslist</a>
+            <a href="{% url 'logout' %}" class="text-white">Logout</a>
     </header>
     <main>
         {% block content %}

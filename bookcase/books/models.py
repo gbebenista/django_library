@@ -12,5 +12,3 @@ class Book(models.Model):
 class BookcaseCart(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     book = models.ManyToManyField(Book)
-    borrow_date = models.DateTimeField()
-    return_date = models.DateTimeField()
