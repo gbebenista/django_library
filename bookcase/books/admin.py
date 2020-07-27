@@ -1,9 +1,6 @@
-# from django.contrib import admin
-# from django.contrib.auth.admin import UserAdmin
-# from .models import Book, BookcaseCart
-#
-#
-# class BookAdministrator(UserAdmin):
-#     pass
-#
-# admin.site.register(Book, BookcaseCart, BookAdministrator)
+from django.contrib import admin
+from books.models import Book, BookcaseCart
+
+
+admin.site.register(Book)
+admin.site.register(BookcaseCart)
