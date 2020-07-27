@@ -33,8 +33,8 @@ ALLOWED_HOSTS = []
 
 
 INSTALLED_APPS = [
-    'users',
     'books',
+    'users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap',
     'crispy_forms',
+    'taggit',
 ]
 
 MIDDLEWARE = [
@@ -126,7 +127,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'overview'
 LOGOUT_REDIRECT_URL = 'login'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"

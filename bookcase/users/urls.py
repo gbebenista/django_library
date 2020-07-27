@@ -1,8 +1,6 @@
 from django.contrib.auth import views
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-from django.views.generic import TemplateView
-
 from .views import RegisterView, ViewLogin
 
 urlpatterns = [
