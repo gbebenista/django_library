@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
 
-from books.forms import CreateBookForm
+from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book
 
 
@@ -27,8 +27,8 @@ class DeleteBookView(DeleteView):
 
 class UpdateBookView(UpdateView):
     model = Book
+    form_class = UpdateBookForm
     success_url = reverse_lazy('bookslist')
-    fields = ['author', 'title', 'publisher', 'tags', ]
     template_name = 'books/updatebook.html'
 
 

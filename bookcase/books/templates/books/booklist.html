@@ -7,7 +7,7 @@
     <div>
         {% for object in page_obj %}
         <p class="shadow bg-white rounded p-4 m-3">
-            <a href="{% url 'detailbook' object.id %}">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a>
+            <a href="{% url 'detailbook' object.id %}" class="text-decoration-none text-dark">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a>
             {% if perms.books.delete_book %}
             <span class="float-right px-1"><a href="{% url 'deletebook' object.id %}"><i class="fa fa-trash btn btn-danger text-white"></i></a></span>
             {% endif %}
