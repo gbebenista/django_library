@@ -2,8 +2,10 @@
 
 {% block title %}Detail book{% endblock %}
 {% block content %}
-<h1>{{ object.title }}</h1>
-<p> Author: {{ object.author }}</p>
-<p> Publisher: {{ object.publisher }}</p>
-<p> Tags: {% for tag in object.tags.all %} <span class="badge badge-info">{{tag}}</span> {% endfor %}</p>
+<div class="shadow bg-white rounded p-4 m-auto w-50 text-center">
+    <h3>{{ object.title }}</h3>
+    <p> Author: {{ object.author }}</p>
+    <p> Publisher: {{ object.publisher }}</p>
+    <p> Tags: {% for tag in object.tags.all %} <span class="badge badge-info">{{tag}}</span> {% endfor %}</p>
+</div>
 {% endblock %}

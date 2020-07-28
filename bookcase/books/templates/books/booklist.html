@@ -2,34 +2,37 @@
 
 {% block title %}Books list{% endblock %}
 {% block content %}
-<a href="{% url 'addbook' %}">ADD BOOK</a>
-<hr/>
-Author | Title | Publisher | Tags
-<hr />
-<div>
-    {% for object in page_obj %}
-    <p><a href="{% url 'detailbook' object.id %}">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a></p>
-    <p>{% if perms.books.delete_book %}<a href="{% url 'deletebook' object.id %}">Delete</a>{% endif %}| {% if perms.books.change_book %}<a href="{% url 'updatebook' object.id %}">Edit</a>{% endif %}</p>
-    <hr/>
-    {% empty %}
-    <p>No objects yet.</p>
-    {% endfor %}
-</div>
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+<div class="p-4 m-auto h5 font-weight-light">
+    <p class="text-center">Author | Title | Publisher</p>
+    <div>
+        {% for object in page_obj %}
+        <p class="shadow bg-white rounded p-4 m-3">
+            <a href="{% url 'detailbook' object.id %}">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a>
+            {% if perms.books.delete_book %}
+            <span class="float-right px-1"><a href="{% url 'deletebook' object.id %}"><i class="fa fa-trash btn btn-danger text-white"></i></a></span>
+            {% endif %}
+            {% if perms.books.change_book %}
+            <span class="float-right px-1"><a href="{% url 'updatebook' object.id %}"><i class="fa fa-edit btn btn-info"></i></a></span>
+            {% endif %}
+        </p>
+        {% empty %}
+        <p>No objects yet.</p>
+        {% endfor %}
+    </div>
+    <div class="pagination d-flex justify-content-center">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
         </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
+    </div>
 </div>
 {% endblock %}

@@ -34,7 +34,6 @@ class UpdateBookView(UpdateView):
 
 class SearchBookView(ListView):
     model = Book
-    fields = ['author', 'title', 'publisher', 'tags', ]
     template_name = 'books/booklist.html'
     paginate_by = 5
 
