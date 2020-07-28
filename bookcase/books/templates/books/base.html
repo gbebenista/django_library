@@ -17,6 +17,7 @@
 </head>
 <body class="bg-light m-auto">
 <header class="shadow p-4 bg-dark mb-3 text-white">
+    <span class="float-right h5 font-weight-light text-muted m-2">Hello, {{user.username}}!</span>
     <h3 class="font-weight-light text-center mb-4">Bookcase</h3>
     <form action="{% url 'bookslist' %}" method="get">
         <div class="input-group pl-3">
@@ -35,7 +36,6 @@
             </ul>
         </div>
     </nav>
-
 </header>
 <main>
     {% block content %}
