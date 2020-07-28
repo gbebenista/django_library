@@ -6,10 +6,18 @@
     <link rel="stylesheet" href="{% static '/css/font-awesome.min.css' %}">
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .zoom {
+        transition: transform .3s;
+        }
+        .zoom:hover{
+         transform: scale(1.02);
+        }
+    </style>
 </head>
 <body class="bg-light m-auto">
 <header class="shadow p-4 bg-dark mb-3 text-white">
-    <h3 class="font-weight-light text-center">Bookcase</h3>
+    <h3 class="font-weight-light text-center mb-4">Bookcase</h3>
     <form action="{% url 'searchbook' %}" method="get">
         <div class="input-group pl-3">
             <input name="q" type="text" class="form-control" placeholder="Search book by author, title, publisher, tag..."/>
