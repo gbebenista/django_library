@@ -6,7 +6,7 @@
     <p class="text-center">Author | Title | Publisher</p>
     <div>
         {% for object in page_obj %}
-        <p class="shadow bg-white rounded p-4 m-3">
+        <div class="shadow bg-white rounded p-4 m-3">
             <a href="{% url 'detailbook' object.id %}" class="text-decoration-none text-dark">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a>
             {% if perms.books.delete_book %}
             <span class="float-right px-1"><a href="{% url 'deletebook' object.id %}"><i class="fa fa-trash btn btn-danger text-white"></i></a></span>
@@ -14,7 +14,7 @@
             {% if perms.books.change_book %}
             <span class="float-right px-1"><a href="{% url 'updatebook' object.id %}"><i class="fa fa-edit btn btn-info"></i></a></span>
             {% endif %}
-        </p>
+        </div>
         {% empty %}
         <p>No objects yet.</p>
         {% endfor %}
