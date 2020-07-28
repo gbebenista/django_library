@@ -21,6 +21,7 @@ class CreationBookView(CreateView):
 
 class DeleteBookView(DeleteView):
     model = Book
+    success_url = reverse_lazy('bookslist')
     template_name = 'books/deletebook.html'
 
 
@@ -34,7 +35,7 @@ class UpdateBookView(UpdateView):
 class SearchBookView(ListView):
     model = Book
     fields = ['author', 'title', 'publisher', 'tags', ]
-    template_name = 'books/searchbook.html'
+    template_name = 'books/booklist.html'
     paginate_by = 5
 
     def get_queryset(self):
@@ -53,4 +54,4 @@ class DetailBookView(DetailView):
 
 class HomeView(LoginRequiredMixin, TemplateView):
     login_url = reverse_lazy('login')
-    template_name = 'books/booklist.html'
+    template_name = 'books/base.html'
