@@ -13,8 +13,9 @@ class UserAdministrator(UserAdmin):
     list_display = ['username', 'email', 'is_superuser', 'is_staff', 'is_active', ]
     list_filter = ('username',)
     fieldsets = (None, {'fields': ('username', 'email')}), ('Permissions', {'fields': ('is_active',
-                                                                                                   'is_staff',
-                                                                                                   'is_superuser', 'user_permissions')})
+                                                                                       'is_staff',
+                                                                                       'is_superuser',
+                                                                                       'user_permissions')})
 
 
 admin.site.register(CustomUser, UserAdministrator)
