@@ -16,18 +16,17 @@
     </style>
 </head>
 <body class="bg-light m-auto">
-<header class="shadow p-4 bg-dark mb-3 text-white">
-    <span class="float-right h5 font-weight-light text-muted m-2">Hello, {{user.username}}!</span>
-    <h3 class="font-weight-light text-center mb-4">Bookcase</h3>
-    <form action="{% url 'bookslist' %}" method="get">
-        <div class="input-group pl-3">
+<header class="shadow bg-dark text-white row mb-5">
+    <h3 class="font-weight-light text-center col m-auto">Bookcase</h3>
+    <form action="{% url 'bookslist' %}" method="get" class="col m-auto">
+        <div class="input-group">
             <input name="q" type="text" class="form-control" placeholder="Search book by author, title, publisher, tag..."/>
             <div class="input-group-append">
                 <button type="submit" class="btn btn-info">Search</button>
             </div>
         </div>
     </form>
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light col">
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav bg-info rounded">
                 <li class="nav-item"><a href="{% url 'addbook' %}" class="nav-link text-white">ADD BOOK</a></li>
@@ -36,6 +35,7 @@
             </ul>
         </div>
     </nav>
+    <span class="float-right h5 font-weight-light text-muted col m-auto">Hello, {{user.username}}!</span>
 </header>
 <main>
     {% block content %}
