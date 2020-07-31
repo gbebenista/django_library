@@ -14,31 +14,29 @@
             </thead>
             <tbody>
             {% for object in page_obj %}
-
             <tr>
-                <th scope="col">{{ object.author }}</th>
-                <th scope="col">{{ object.title }}</th>
-                <th scope="col">{{ object.publisher }}</th>
+                <th>{{ object.author }}</th>
+                <th><a href="{% url 'detailbook' object.id %}" class="text-decoration-none text-dark">{{ object.title }}</a></th>
+                <th>{{ object.publisher }}</th>
                 {% if object.is_loaned == False %}
-                <th scope="col">
+                <th>
                     <span class="text-success font-weight-normal">Ready to loan</span>
                 </th>
-                <th scope="col">
+                <th>
                     <a href=""><i class="fa fa-shopping-basket btn btn-success"></i></a>
                 </th>
                 {% else %}
-                <th scope="col">
+                <th>
                     <span class="text-danger font-weight-normal">Loaned</span>
                 </th>
                 {% endif %}
-                <!--            <a href="{% url 'detailbook' object.id %}" class="text-decoration-none text-dark"></a>-->
                 {% if perms.books.delete_book %}
-                <th scope="col">
+                <th>
                     <a href="{% url 'deletebook' object.id %}"><i class="fa fa-trash btn btn-danger text-white"></i></a>
                 </th>
                 {% endif %}
                 {% if perms.books.change_book %}
-                <th scope="col">
+                <th>
                     <a href="{% url 'updatebook' object.id %}"><i class="fa fa-edit btn btn-info"></i></a>
                 </th>
                 {% endif %}
