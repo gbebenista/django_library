@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'bootstrap',
     'crispy_forms',
     'taggit',
+    'jquery',
 ]
 
 MIDDLEWARE = [

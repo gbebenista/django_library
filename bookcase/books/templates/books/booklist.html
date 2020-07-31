@@ -23,11 +23,14 @@
                     <span class="text-success font-weight-normal">Ready to loan</span>
                 </th>
                 <th>
-                    <a href=""><i class="fa fa-shopping-basket btn btn-success"></i></a>
+                    <i class="fa fa-shopping-basket btn btn-success"></i>
                 </th>
                 {% else %}
                 <th>
                     <span class="text-danger font-weight-normal">Loaned</span>
+                </th>
+                <th>
+                    <i class="fa fa-shopping-basket btn btn-success disabled"></i>
                 </th>
                 {% endif %}
                 {% if perms.books.delete_book %}
@@ -43,22 +46,27 @@
             </tr>
             </tbody>
         {% empty %}
-        <p class="text-center">Empty</p>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Empty</th>
+                <th></th>
+            </tr>
         {% endfor %}
         </table>
     </div>
     <div class="pagination d-flex justify-content-center">
         <span class="step-links">
             {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                <a href="?page=1" class="btn btn-info">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-info">previous</a>
             {% endif %}
             <span class="current">
                 Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
             </span>
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-info">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-info">last &raquo;</a>
             {% endif %}
         </span>
     </div>
