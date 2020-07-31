@@ -1,23 +1,53 @@
 {% extends 'books/base.html' %}
-
 {% block title %}Books list{% endblock %}
 {% block content %}
 <div class="p-4 m-auto h5 font-weight-light">
-    <p class="text-center">Author | Title | Publisher</p>
-    <div>
-        {% for object in page_obj %}
-        <div class="shadow bg-white rounded p-4 m-3 zoom">
-            <a href="{% url 'detailbook' object.id %}" class="text-decoration-none text-dark">{{ object.author }} | {{ object.title }} | {{ object.publisher }}</a>
-            {% if perms.books.delete_book %}
-            <span class="float-right px-1"><a href="{% url 'deletebook' object.id %}"><i class="fa fa-trash btn btn-danger text-white"></i></a></span>
-            {% endif %}
-            {% if perms.books.change_book %}
-            <span class="float-right px-1"><a href="{% url 'updatebook' object.id %}"><i class="fa fa-edit btn btn-info"></i></a></span>
-            {% endif %}
-        </div>
+    <div class="shadow bg-white rounded m-3">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Author</th>
+                <th scope="col">Title</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in page_obj %}
+
+            <tr>
+                <th scope="col">{{ object.author }}</th>
+                <th scope="col">{{ object.title }}</th>
+                <th scope="col">{{ object.publisher }}</th>
+                {% if object.is_loaned == False %}
+                <th scope="col">
+                    <span class="text-success font-weight-normal">Ready to loan</span>
+                </th>
+                <th scope="col">
+                    <a href=""><i class="fa fa-shopping-basket btn btn-success"></i></a>
+                </th>
+                {% else %}
+                <th scope="col">
+                    <span class="text-danger font-weight-normal">Loaned</span>
+                </th>
+                {% endif %}
+                <!--            <a href="{% url 'detailbook' object.id %}" class="text-decoration-none text-dark"></a>-->
+                {% if perms.books.delete_book %}
+                <th scope="col">
+                    <a href="{% url 'deletebook' object.id %}"><i class="fa fa-trash btn btn-danger text-white"></i></a>
+                </th>
+                {% endif %}
+                {% if perms.books.change_book %}
+                <th scope="col">
+                    <a href="{% url 'updatebook' object.id %}"><i class="fa fa-edit btn btn-info"></i></a>
+                </th>
+                {% endif %}
+            </tr>
+            </tbody>
         {% empty %}
-        <p>No objects yet.</p>
+        <p class="text-center">Empty</p>
         {% endfor %}
+        </table>
     </div>
     <div class="pagination d-flex justify-content-center">
         <span class="step-links">
