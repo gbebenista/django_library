@@ -6,7 +6,7 @@ from django.views import View
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
 
 from books.forms import CreateBookForm, UpdateBookForm
-from books.models import Book
+from books.models import Book, UserBasket
 from users.models import CustomUser
 
 
@@ -31,13 +31,26 @@ class ListBookView(ListView):
 
 def send_to_bucket(request):
     b = Book.objects.get(id=request.POST.get('book_id'))
-    b.loaner_user = request.user
-    b.save()
+    if UserBasket.objects.exists():
+        basket = UserBasket.objects.get(user_id=request.user)
+    if not UserBasket.objects.exists():
+        create_basket = UserBasket.objects.create(user_id=request.user)
+        create_basket.books.add(b)
+        create_basket.save()
+        return JsonResponse({"success": True})
+    basket.books.add(b)
+    basket.save()
+    # b.save()
     return JsonResponse({"success": True})
 
 
 class BasketListView(ListView):
-    pass
+    model = UserBasket
+    template_name = 'books/basketlist.html'
+
+    def get_queryset(self):
+        basket_list = UserBasket.objects.filter(Q(user_id=self.request.user))
+        return basket_list
 
 
 class CreationBookView(CreateView):

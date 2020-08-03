@@ -1,0 +1,29 @@
+{% extends 'books/base.html' %}
+{% block title %}Create book{% endblock %}
+{% block content %}
+<div class="p-4 m-auto h5 font-weight-light">
+    <p class="text-center">Your basket, {{user.username}}!</p>
+    <table class="table shadow bg-white rounded">
+    {% for object in object_list %}
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Publisher</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for books in object.books.all %}
+                <th scope="col">{{books.title}}</th>
+                <th scope="col">{{books.author}}</th>
+                <th scope="col">{{books.publisher}}</th>
+                <th scope="col"><span class="btn btn-danger"><i class="fa fa-minus-circle"></i></span></th>
+            </tr>
+        </tbody>
+                {% endfor %}
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

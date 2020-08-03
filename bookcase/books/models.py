@@ -26,3 +26,11 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+
+class UserBasket(models.Model):
+    basket_id = models.UUIDField(primary_key=True, default=uuid.uuid4(), unique=True)
+    user_id = models.ForeignKey('users.CustomUser', models.SET_NULL, null=True)
+    books = models.ManyToManyField(Book)
+
+    def __str__(self):
+        return self.books
