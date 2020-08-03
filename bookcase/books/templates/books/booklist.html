@@ -1,8 +1,38 @@
 {% extends 'books/base.html' %}
 {% block title %}Books list{% endblock %}
+{% block javascript %}
+<script>
+$('.basket').click(function(){
+    var bookid = $(this).attr("data-catid");
+    const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      type:"POST",
+      url: "{% url 'addtocart'%}",
+      data:{
+      'csrfmiddlewaretoken': csrftoken,
+      'book_id': bookid,
+      },
+      dataType: 'json',
+      success: function(data){
+        if (data.success){
+            alert("Added to basket");
+            $('#basket'+bookid).removeClass('btn btn-success');
+            $('#basket'+bookid).addClass('btn btn-success disabled');
+            $('#userbasket').removeClass('btn disabled');
+            $('#userbasket').addClass('btn active text-white');
+        }
+        else{
+            alert("There is an error occurred");
+        }
+      }
+    });
+});
+</script>
+{% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="p-4 m-auto h5 font-weight-light">
-    <div class="shadow bg-white rounded m-3">
+    <div class="shadow bg-white rounded">
         <table class="table">
             <thead>
             <tr>
@@ -10,6 +40,9 @@
                 <th scope="col">Title</th>
                 <th scope="col">Publisher</th>
                 <th scope="col">Status</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -22,15 +55,21 @@
                 <th>
                     <span class="text-success font-weight-normal">Ready to loan</span>
                 </th>
+                {% if object.loaner_user == Null %}
                 <th>
-                    <i class="fa fa-shopping-basket btn btn-success"></i>
+                    <span class="basket btn btn-success" data-catid="{{ object.id }}" id="basket{{ object.id }}"><i class="fa fa-shopping-basket"></i></span>
                 </th>
+                {% else %}
+                <th>
+                    <span class="basket btn btn-success disabled" data-catid="{{ object.id }}" id="basket{{ object.id }}"><i class="fa fa-shopping-basket"></i></span>
+                </th>
+                {% endif %}
                 {% else %}
                 <th>
                     <span class="text-danger font-weight-normal">Loaned</span>
                 </th>
                 <th>
-                    <i class="fa fa-shopping-basket btn btn-success disabled"></i>
+                    <span class="basket btn btn-success disabled"><i class="fa fa-shopping-basket"></i></span>
                 </th>
                 {% endif %}
                 {% if perms.books.delete_book %}
