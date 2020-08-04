@@ -29,18 +29,16 @@ class ListBookView(ListView):
 # class AddCartView(View):
 #     model = Book
 
-def send_to_bucket(request):
+def send_to_basket(request):
     b = Book.objects.get(id=request.POST.get('book_id'))
-    if UserBasket.objects.exists():
-        basket = UserBasket.objects.get(user_id=request.user)
-    if not UserBasket.objects.exists():
+    basket = UserBasket.objects.filter(user_id=request.user).first()
+    if not basket:
         create_basket = UserBasket.objects.create(user_id=request.user)
         create_basket.books.add(b)
         create_basket.save()
         return JsonResponse({"success": True})
     basket.books.add(b)
     basket.save()
-    # b.save()
     return JsonResponse({"success": True})
 
 
@@ -51,6 +49,17 @@ class BasketListView(ListView):
     def get_queryset(self):
         basket_list = UserBasket.objects.filter(Q(user_id=self.request.user))
         return basket_list
+
+
+def delete_from_basket(request):
+    b = Book.objects.get(id=request.POST.get('book_id'))
+    basket = UserBasket.objects.get(user_id=request.user)
+    basket.books.remove(b)
+    return JsonResponse({"success": True})
+
+
+def set_book_to_loaned(request):
+    basket = UserBasket.objects.get(user_id=request.user)
 
 
 class CreationBookView(CreateView):

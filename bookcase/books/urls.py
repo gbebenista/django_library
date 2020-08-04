@@ -9,6 +9,7 @@ urlpatterns = [
     path('deletebook/<pk>', DeleteBookView.as_view(), name='deletebook'),
     path('updatebook/<pk>', UpdateBookView.as_view(), name='updatebook'),
     path('detailbook/<pk>', DetailBookView.as_view(), name='detailbook'),
-    path('add_to_bookcart', views.send_to_bucket, name='addtocart'),
-    path('basket/<pk>', BasketListView.as_view(), name='basketlist')
+    path('add_to_basket', views.send_to_basket, name='addtobasket'),
+    path('basket/user:<pk>', BasketListView.as_view(), name='basketlist'),
+    path("delete_from_basket", views.delete_from_basket, name='deletefrombasket')
 ]

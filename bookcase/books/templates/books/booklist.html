@@ -7,7 +7,7 @@ $('.basket').click(function(){
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
       type:"POST",
-      url: "{% url 'addtocart'%}",
+      url: "{% url 'addtobasket'%}",
       data:{
       'csrfmiddlewaretoken': csrftoken,
       'book_id': bookid,
@@ -15,7 +15,6 @@ $('.basket').click(function(){
       dataType: 'json',
       success: function(data){
         if (data.success){
-            alert("Added to basket");
             $('#basket'+bookid).removeClass('btn btn-success');
             $('#basket'+bookid).addClass('btn btn-success disabled');
             $('#userbasket').removeClass('btn disabled');
@@ -41,8 +40,12 @@ $('.basket').click(function(){
                 <th scope="col">Publisher</th>
                 <th scope="col">Status</th>
                 <th scope="col"></th>
+                {% if perms.books.delete_book %}
                 <th scope="col"></th>
+                {% endif %}
+                {% if perms.books.change_book %}
                 <th scope="col"></th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -55,15 +58,9 @@ $('.basket').click(function(){
                 <th>
                     <span class="text-success font-weight-normal">Ready to loan</span>
                 </th>
-                {% if object.loaner_user == Null %}
                 <th>
                     <span class="basket btn btn-success" data-catid="{{ object.id }}" id="basket{{ object.id }}"><i class="fa fa-shopping-basket"></i></span>
                 </th>
-                {% else %}
-                <th>
-                    <span class="basket btn btn-success disabled" data-catid="{{ object.id }}" id="basket{{ object.id }}"><i class="fa fa-shopping-basket"></i></span>
-                </th>
-                {% endif %}
                 {% else %}
                 <th>
                     <span class="text-danger font-weight-normal">Loaned</span>
@@ -74,24 +71,24 @@ $('.basket').click(function(){
                 {% endif %}
                 {% if perms.books.delete_book %}
                 <th>
-                    <a href="{% url 'deletebook' object.id %}"><i class="fa fa-trash btn btn-danger text-white"></i></a>
+                    <a href="{% url 'deletebook' object.id %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
                 </th>
                 {% endif %}
                 {% if perms.books.change_book %}
                 <th>
-                    <a href="{% url 'updatebook' object.id %}"><i class="fa fa-edit btn btn-info"></i></a>
+                    <a href="{% url 'updatebook' object.id %}" class="btn btn-info"><i class="fa fa-edit"></i></a>
                 </th>
                 {% endif %}
             </tr>
             </tbody>
-        {% empty %}
+            {% empty %}
             <tr>
                 <th></th>
                 <th></th>
                 <th>Empty</th>
                 <th></th>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </table>
     </div>
     <div class="pagination d-flex justify-content-center">

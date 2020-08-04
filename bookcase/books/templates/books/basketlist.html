@@ -1,10 +1,39 @@
 {% extends 'books/base.html' %}
-{% block title %}Create book{% endblock %}
+{% block title %}Basket{% endblock %}
+{% block javascript %}
+<script>
+$('.delete').click(function(){
+    var bookid = $(this).attr('data-catid');
+    const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    $.ajax({
+      type:"POST",
+      url: "{% url 'deletefrombasket'%}",
+      data:{
+      'csrfmiddlewaretoken': csrftoken,
+      'book_id': bookid,
+      },
+      dataType: 'json',
+      success: function(data){
+        if (data.success){
+            setTimeout(function(){
+                location.reload();
+            }, 100);
+        }
+        else{
+            alert("There is an error occurred");
+        }
+      }
+    });
+});
+</script>
+
+{% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="p-4 m-auto h5 font-weight-light">
     <p class="text-center">Your basket, {{user.username}}!</p>
     <table class="table shadow bg-white rounded">
-    {% for object in object_list %}
+        {% for object in object_list %}
         <thead>
             <tr>
                 <th scope="col">Title</th>
@@ -14,16 +43,22 @@
             </tr>
         </thead>
         <tbody>
+
             <tr>
                 {% for books in object.books.all %}
                 <th scope="col">{{books.title}}</th>
                 <th scope="col">{{books.author}}</th>
                 <th scope="col">{{books.publisher}}</th>
-                <th scope="col"><span class="btn btn-danger"><i class="fa fa-minus-circle"></i></span></th>
+                <th scope="col"><span class="btn btn-danger delete" data-catid="{{books.id}}"><i class="fa fa-minus-circle"></i></span></th>
+            </tr>
+            {% empty %}
+            <tr>
+                <th scope="col">Empty</th>
             </tr>
         </tbody>
                 {% endfor %}
-    {% endfor %}
+        {% endfor %}
     </table>
+    <p class="btn btn-info borrow">Borrow</p>
 </div>
 {% endblock %}
