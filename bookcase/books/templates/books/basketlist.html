@@ -25,6 +25,7 @@ $('.delete').click(function(){
       }
     });
 });
+
 </script>
 
 {% endblock %}
@@ -35,30 +36,34 @@ $('.delete').click(function(){
     <table class="table shadow bg-white rounded">
         {% for object in object_list %}
         <thead>
-            <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Publisher</th>
-                <th scope="col"></th>
-            </tr>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Publisher</th>
+            <th scope="col"></th>
+        </tr>
         </thead>
         <tbody>
-
-            <tr>
-                {% for books in object.books.all %}
-                <th scope="col">{{books.title}}</th>
-                <th scope="col">{{books.author}}</th>
-                <th scope="col">{{books.publisher}}</th>
-                <th scope="col"><span class="btn btn-danger delete" data-catid="{{books.id}}"><i class="fa fa-minus-circle"></i></span></th>
-            </tr>
-            {% empty %}
-            <tr>
-                <th scope="col">Empty</th>
-            </tr>
+        <tr>
+            {% for books in object.books.all %}
+            <th scope="col">{{books.title}}</th>
+            <th scope="col">{{books.author}}</th>
+            <th scope="col">{{books.publisher}}</th>
+            <th scope="col"><span class="btn btn-danger delete" data-catid="{{books.id}}"><i
+                    class="fa fa-minus-circle"></i></span></th>
+        </tr>
+                {% empty %}
+                <tr>
+                    <th scope="col">Empty</th>
+                </tr>
         </tbody>
-                {% endfor %}
+            {% endfor %}
+        {% empty %}
+            <tr>
+                <th scope="col">You have any basket available</th>
+            </tr>
         {% endfor %}
     </table>
-    <p class="btn btn-info borrow">Borrow</p>
+    <a href="{% url 'setloaned' %}" class="btn btn-info borrow">Borrow</a>
 </div>
 {% endblock %}

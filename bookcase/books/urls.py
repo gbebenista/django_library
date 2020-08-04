@@ -11,5 +11,6 @@ urlpatterns = [
     path('detailbook/<pk>', DetailBookView.as_view(), name='detailbook'),
     path('add_to_basket', views.send_to_basket, name='addtobasket'),
     path('basket/user:<pk>', BasketListView.as_view(), name='basketlist'),
-    path("delete_from_basket", views.delete_from_basket, name='deletefrombasket')
+    path("delete_from_basket", views.delete_from_basket, name='deletefrombasket'),
+    path('set_loaned', views.set_book_to_loaned, name="setloaned")
 ]
