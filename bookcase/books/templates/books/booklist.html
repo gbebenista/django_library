@@ -56,14 +56,14 @@ $('.basket').click(function(){
                 <th>{{ object.publisher }}</th>
                 {% if object.is_loaned == False %}
                 <th>
-                    <span class="text-success font-weight-normal">Ready to loan</span>
+                    <span class="text-success font-weight-normal">Ready to borrow</span>
                 </th>
                 <th>
                     <span class="basket btn btn-success" data-catid="{{ object.id }}" id="basket{{ object.id }}"><i class="fa fa-shopping-basket"></i></span>
                 </th>
                 {% else %}
                 <th>
-                    <span class="text-danger font-weight-normal">Loaned</span>
+                    <span class="text-danger font-weight-normal">Borrowed</span>
                 </th>
                 <th>
                     <span class="basket btn btn-success disabled"><i class="fa fa-shopping-basket"></i></span>

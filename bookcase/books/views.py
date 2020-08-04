@@ -3,11 +3,9 @@ from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views import View
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView, RedirectView
 from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book, UserBasket
-from users.models import CustomUser
 
 
 class ListBookView(ListView):
@@ -26,20 +24,18 @@ class ListBookView(ListView):
         return object_list.order_by('title')
 
 
-# class SendToBasketView(View):
-
-
-def send_to_basket(request):
-    book = Book.objects.get(id=request.POST.get('book_id'))
-    basket = UserBasket.objects.filter(user_id=request.user).first()
-    if not basket:
-        create_basket = UserBasket.objects.create(user_id=request.user)
-        create_basket.books.add(book)
-        create_basket.save()
+class SendToBasketView(RedirectView):
+    def post(self, request, *args, **kwargs):
+        book = Book.objects.get(id=request.POST.get('book_id'))
+        basket = UserBasket.objects.filter(user_id=request.user).first()
+        if not basket:
+            create_basket = UserBasket.objects.create(user_id=request.user)
+            create_basket.books.add(book)
+            create_basket.save()
+            return JsonResponse({"success": True})
+        basket.books.add(book)
+        basket.save()
         return JsonResponse({"success": True})
-    basket.books.add(book)
-    basket.save()
-    return JsonResponse({"success": True})
 
 
 class BasketListView(ListView):
@@ -51,22 +47,24 @@ class BasketListView(ListView):
         return basket_list
 
 
-def delete_from_basket(request):
-    book = Book.objects.get(id=request.POST.get('book_id'))
-    basket = UserBasket.objects.get(user_id=request.user)
-    basket.books.remove(book)
-    return JsonResponse({"success": True})
+class DeleteFromBasketView(RedirectView):
+    def post(self, request, *args, **kwargs):
+        book = Book.objects.get(id=request.POST.get('book_id'))
+        basket = UserBasket.objects.get(user_id=request.user)
+        basket.books.remove(book)
+        return JsonResponse({"success": True})
 
 
-def set_book_to_loaned(request):
-    basket = UserBasket.objects.get(user_id=request.user)
-    for b in basket.books.all():
-        book = Book.objects.get(id=b.id)
-        book.is_loaned = True
-        book.loaner_user = request.user
-        book.save()
-    basket.delete()
-    return redirect("bookslist")
+class SetBookToLoanedView(RedirectView):
+    def get(self, request, **response_kwargs):
+        basket = UserBasket.objects.get(user_id=request.user)
+        for b in basket.books.all():
+            book = Book.objects.get(id=b.id)
+            book.is_loaned = True
+            book.loaner_user = request.user
+            book.save()
+        basket.delete()
+        return redirect("bookslist")
 
 
 class CreationBookView(CreateView):
