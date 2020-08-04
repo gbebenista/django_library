@@ -1,5 +1,5 @@
 {% extends 'books/base.html' %}
-{% block title %}Basket{% endblock %}
+{% block title %}Your books{% endblock %}
 {% block javascript %}
 <script>
 $('.deletefrombasket').click(function(){
@@ -7,7 +7,7 @@ $('.deletefrombasket').click(function(){
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
       type:"POST",
-      url: "{% url 'deletefrombasket'%}",
+      url: "{% url 'usergivebackbook'%}",
       data:{
       'csrfmiddlewaretoken': csrftoken,
       'book_id': bookid,
@@ -30,9 +30,9 @@ $('.deletefrombasket').click(function(){
 {% block content %}
 {% csrf_token %}
 <div class="p-4 m-auto h5 font-weight-light">
-    <p class="text-center">Your basket, {{user.username}}!</p>
+    <p class="text-center">Your books</p>
     <table class="table shadow bg-white rounded">
-        {% for object in object_list %}
+
         <thead>
         <tr>
             <th scope="col">Title</th>
@@ -42,12 +42,12 @@ $('.deletefrombasket').click(function(){
         </tr>
         </thead>
         <tbody>
+        {% for object in object_list %}
         <tr>
-            {% for books in object.books.all %}
-            <th scope="col">{{books.title}}</th>
-            <th scope="col">{{books.author}}</th>
-            <th scope="col">{{books.publisher}}</th>
-            <th scope="col"><span class="btn btn-danger deletefrombasket" data-catid="{{books.id}}"><i
+            <th scope="col">{{object.title}}</th>
+            <th scope="col">{{object.author}}</th>
+            <th scope="col">{{object.publisher}}</th>
+            <th scope="col"><span class="btn btn-danger deletefrombasket" data-catid="{{object.id}}"><i
                     class="fa fa-minus-circle"></i></span></th>
         </tr>
                 {% empty %}
@@ -55,13 +55,7 @@ $('.deletefrombasket').click(function(){
                     <th scope="col">Empty</th>
                 </tr>
         </tbody>
-            {% endfor %}
-        {% empty %}
-            <tr>
-                <th scope="col">You have any basket available</th>
-            </tr>
         {% endfor %}
     </table>
-    <a href="{% url 'setloaned' %}" class="btn btn-info borrow">Loan</a>
 </div>
 {% endblock %}

@@ -11,7 +11,7 @@
 </head>
 <body class="bg-light m-auto">
 <header class="shadow bg-dark text-white row mb-5">
-    <h3 class="font-weight-light text-center col-3 m-auto">Bookcase</h3>
+    <h3 class="font-weight-light text-center col-1 m-auto">Bookcase</h3>
     <form action="{% url 'bookslist' %}" method="get" class="col-3 m-auto">
         <div class="input-group">
             <input name="q" type="text" class="form-control" placeholder="Search book by author, title, publisher, tag..."/>
@@ -31,8 +31,9 @@
             </ul>
         </div>
     </nav>
+    <div class="dropdown h5 font-weight-light text-muted col-2 m-auto ">Hello, {{user.username}}!</div>
+    <a class="text-decoration-none col-1 m-auto" href="{% url 'userbooks' %}">Your books</a>
     <a class="h4 col-1 m-auto" href="{% url 'basketlist' user.id %}"><i class="fa fa-shopping-basket btn disabled"  id="userbasket" ></i></a>
-    <span class="h5 font-weight-light text-muted col-2 m-auto">Hello, {{user.username}}!</span>
 </header>
 <main>
     {% block content %}

@@ -15,6 +15,9 @@ $('.basket').click(function(){
       dataType: 'json',
       success: function(data){
         if (data.success){
+            $('#status'+bookid).text("In basket");
+            $('#status'+bookid).removeClass('text-success');
+            $('#status'+bookid).addClass('text-warning');
             $('#basket'+bookid).removeClass('btn btn-success');
             $('#basket'+bookid).addClass('btn btn-success disabled');
             $('#userbasket').removeClass('btn disabled');
@@ -56,14 +59,14 @@ $('.basket').click(function(){
                 <th>{{ object.publisher }}</th>
                 {% if object.is_loaned == False %}
                 <th>
-                    <span class="text-success font-weight-normal">Ready to borrow</span>
+                    <span class="text-success font-weight-normal" id="status{{ object.id }}">Ready to loan</span>
                 </th>
                 <th>
                     <span class="basket btn btn-success" data-catid="{{ object.id }}" id="basket{{ object.id }}"><i class="fa fa-shopping-basket"></i></span>
                 </th>
                 {% else %}
                 <th>
-                    <span class="text-danger font-weight-normal">Borrowed</span>
+                    <span class="status text-danger font-weight-normal">Loaned</span>
                 </th>
                 <th>
                     <span class="basket btn btn-success disabled"><i class="fa fa-shopping-basket"></i></span>
