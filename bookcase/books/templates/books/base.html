@@ -16,7 +16,7 @@
 <body class="bg-light">
 <header class="shadow bg-dark text-white row mb-4 p-2">
     <h3 class="font-weight-light text-center col-2 m-auto">
-        <a href="{% url 'home' %}" class="text-white text-decoration-none">Bookcase</a>
+        <a href="{% url 'home' %}" class="text-white text-decoration-none"><i class="fa fa-book-reader mr-1"></i>Bookcase</a>
     </h3>
     <form action="{% url 'home' %}" method="get" class="col-6 m-auto">
         <div class="input-group">
@@ -27,9 +27,9 @@
             </div>
         </div>
     </form>
-    <div class="col-2 text-center">
+    <div class="col-2 text-center m-auto">
         <div class="dropdown">
-            <button type="button" class="btn btn-dark dropdown-toggle text-muted" data-toggle="dropdown">
+            <button type="button" class="btn btn-dark dropdown-toggle text-muted m-auto" data-toggle="dropdown">
                 {{user.username}}
             </button>
             <div class="dropdown-menu">
@@ -39,8 +39,12 @@
             </div>
         </div>
     </div>
-    <a class="col-1 m-auto btn btn-dark" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip" title="Your basket">
-        <i class="fa fa-shopping-basket"></i>
+    {% if is_userbasket_exist == False %}
+    <a class="col-1 m-auto btn btn-dark disabled" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip" title="Your basket">
+        {% else %}
+        <a class="col-1 m-auto btn btn-dark" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip" title="Your basket">
+            {% endif %}
+        <i class="fa fa-shopping-basket h4 m-auto"></i>
     </a>
 </header>
 <main>
@@ -50,23 +54,6 @@
 <script>
 $(document).ready(function(){
 $('[data-toggle="tooltip"]').tooltip();
-});
-$(document).ready(function(){
-const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-$.ajax({
-      type:"POST",
-      url: "{% url 'checkbasket'%}",
-      data:{'csrfmiddlewaretoken': csrftoken},
-      dataType: 'json',
-      success: function(data){
-        if (data.success){
-            $('#userbasket').removeClass('disabled');
-        }
-        else{
-            $('#userbasket').addClass('disabled');
-        }
-      }
-    });
 });
 {% block javascript %}
 {% endblock %}

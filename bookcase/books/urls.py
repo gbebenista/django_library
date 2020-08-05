@@ -1,6 +1,6 @@
 from django.urls import path
 from books.views import ListBookView, CreationBookView, DeleteBookView, UpdateBookView, DetailBookView, BasketListView, \
-    SetBookToLoanedView, DeleteFromBasketView, SendToBasketView, LoanedByUserView, UserGiveBackBookView, CheckBasketView
+    SetBookToLoanedView, DeleteFromBasketView, SendToBasketView, LoanedByUserView, UserGiveBackBookView
 
 urlpatterns = [
     path('', ListBookView.as_view(), name='home'),
@@ -14,5 +14,4 @@ urlpatterns = [
     path('set_loaned', SetBookToLoanedView.as_view(), name="setloaned"),
     path('userbooks', LoanedByUserView.as_view(), name='userbooks'),
     path('usergivebackbook', UserGiveBackBookView.as_view(), name='usergivebackbook'),
-    path('checkbasket', CheckBasketView.as_view(), name="checkbasket")
 ]

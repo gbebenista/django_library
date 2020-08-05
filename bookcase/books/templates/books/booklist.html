@@ -1,7 +1,9 @@
 {% extends 'books/base.html' %}
 {% block title %}Books list{% endblock %}
 {% block javascript %}
+$(document).ready(function(){
 
+});
 $('.basket').click(function(){
     var bookid = $(this).attr("data-catid");
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
@@ -19,7 +21,9 @@ $('.basket').click(function(){
             $('#status'+bookid).removeClass('text-success');
             $('#status'+bookid).addClass('text-warning');
             $('#basket'+bookid).addClass('btn btn-warning disabled');
-            $('#userbasket').removeClass('disabled');
+            if($('#userbasket').hasClass('disabled')){
+                $('#userbasket').removeClass('disabled');
+                }
         }
         else{
             alert("There is an error occurred");

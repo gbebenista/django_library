@@ -8,7 +8,21 @@ from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book, UserBasket
 
 
-class ListBookView(ListView):
+# TODO: jak książka w koszyku, to ustawiona status w tabeli na loaned, link na całym wierszu książki, jak nie ma książki w koszyku to usunąć koszyk, jak książka jest wypożyczona to inny user nie może wypożyczyć (bo teraz to nadpisuje)
+
+
+class CheckBasketMixin:
+    def get_context_data(self):
+        context = super(CheckBasketMixin, self).get_context_data()
+        context['is_userbasket_exist'] = self.is_userbasket_exist(self.request.user)
+        return context
+
+    def is_userbasket_exist(self, user):
+        basket = UserBasket.objects.filter(user_id=user).exists()
+        return basket
+
+
+class ListBookView(CheckBasketMixin, ListView):
     model = Book
     template_name = 'books/booklist.html'
     paginate_by = 5
@@ -21,16 +35,6 @@ class ListBookView(ListView):
             Q(title__icontains=query) | Q(author__icontains=query) | Q(publisher__icontains=query)
         )
         return object_list.order_by('title')
-
-
-class CheckBasketView(RedirectView):
-    def post(self, request, *args, **kwargs):
-        if request.is_ajax:
-            basket = UserBasket.objects.filter(user_id=request.user).first()
-            if not basket:
-                return JsonResponse({"success": False})
-            return JsonResponse({"success": True})
-        return JsonResponse({"success": False})
 
 
 class SendToBasketView(RedirectView):
@@ -49,7 +53,14 @@ class SendToBasketView(RedirectView):
         return JsonResponse({'success': False})
 
 
-class BasketListView(ListView):
+# class CheckIfInBasketView(RedirectView):
+#     def post(self, request, *args, **kwargs):
+#         if request.is_ajax:
+#             return JsonResponse({"success": True})
+#         return JsonResponse({"success": False})
+
+
+class BasketListView(CheckBasketMixin, ListView):
     model = UserBasket
     template_name = 'books/basketlist.html'
 
@@ -111,7 +122,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
     template_name = 'books/base.html'
 
 
-class LoanedByUserView(ListView):
+class LoanedByUserView(CheckBasketMixin, ListView):
     model = Book
     template_name = 'books/userbookslist.html'
 
