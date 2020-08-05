@@ -1,8 +1,7 @@
 {% extends 'books/base.html' %}
 {% block title %}Your books{% endblock %}
 {% block javascript %}
-<script>
-$('.deletefrombasket').click(function(){
+$('.giveback').click(function(){
     var bookid = $(this).attr('data-catid');
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
@@ -25,7 +24,6 @@ $('.deletefrombasket').click(function(){
       }
     });
 });
-</script>
 {% endblock %}
 {% block content %}
 {% csrf_token %}
@@ -47,8 +45,11 @@ $('.deletefrombasket').click(function(){
             <th scope="col">{{object.title}}</th>
             <th scope="col">{{object.author}}</th>
             <th scope="col">{{object.publisher}}</th>
-            <th scope="col"><span class="btn btn-danger deletefrombasket" data-catid="{{object.id}}"><i
-                    class="fa fa-minus-circle"></i></span></th>
+            <th scope="col">
+                <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip" title="Give back">
+                    <i class="fa fa-undo"></i>
+                </span>
+            </th>
         </tr>
                 {% empty %}
                 <tr>

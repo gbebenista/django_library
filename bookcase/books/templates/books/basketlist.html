@@ -1,7 +1,6 @@
 {% extends 'books/base.html' %}
 {% block title %}Basket{% endblock %}
 {% block javascript %}
-<script>
 $('.deletefrombasket').click(function(){
     var bookid = $(this).attr('data-catid');
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
@@ -25,12 +24,11 @@ $('.deletefrombasket').click(function(){
       }
     });
 });
-</script>
 {% endblock %}
 {% block content %}
 {% csrf_token %}
-<div class="p-4 m-auto h5 font-weight-light">
-    <p class="text-center">Your basket, {{user.username}}!</p>
+<div class="p-4 m-auto h5">
+    <p class="text-center">Your basket</p>
     <table class="table shadow bg-white rounded">
         {% for object in object_list %}
         <thead>
@@ -47,21 +45,24 @@ $('.deletefrombasket').click(function(){
             <th scope="col">{{books.title}}</th>
             <th scope="col">{{books.author}}</th>
             <th scope="col">{{books.publisher}}</th>
-            <th scope="col"><span class="btn btn-danger deletefrombasket" data-catid="{{books.id}}"><i
-                    class="fa fa-minus-circle"></i></span></th>
+            <th scope="col">
+                <span class="btn btn-danger deletefrombasket" data-catid="{{books.id}}" data-toggle="tooltip" title="Delete from basket">
+                    <i class="fa fa-minus-circle"></i>
+                </span>
+            </th>
         </tr>
-                {% empty %}
-                <tr>
-                    <th scope="col">Empty</th>
-                </tr>
+        {% empty %}
+        <tr>
+            <th scope="col">Empty</th>
+        </tr>
         </tbody>
             {% endfor %}
         {% empty %}
-            <tr>
-                <th scope="col">You have any basket available</th>
-            </tr>
+        <tr>
+            <th scope="col">You have any basket available</th>
+        </tr>
         {% endfor %}
     </table>
-    <a href="{% url 'setloaned' %}" class="btn btn-info borrow">Loan</a>
+    <a href="{% url 'setloaned' %}" class="btn btn-info borrow" data-toggle="tooltip" title="Borrow book!">Borrow</a>
 </div>
 {% endblock %}

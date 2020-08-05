@@ -23,6 +23,16 @@ class ListBookView(ListView):
         return object_list.order_by('title')
 
 
+class CheckBasketView(RedirectView):
+    def post(self, request, *args, **kwargs):
+        if request.is_ajax:
+            basket = UserBasket.objects.filter(user_id=request.user).first()
+            if not basket:
+                return JsonResponse({"success": False})
+            return JsonResponse({"success": True})
+        return JsonResponse({"success": False})
+
+
 class SendToBasketView(RedirectView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax:
@@ -68,31 +78,31 @@ class SetBookToLoanedView(RedirectView):
                 book.loaner_user = request.user
                 book.save()
         basket.delete()
-        return redirect("bookslist")
+        return redirect("home")
 
 
 class CreationBookView(CreateView):
     form_class = CreateBookForm
-    success_url = reverse_lazy('bookslist')
+    success_url = reverse_lazy('home')
     template_name = 'books/createbook.html'
 
 
 class DeleteBookView(DeleteView):
     model = Book
-    success_url = reverse_lazy('bookslist')
+    success_url = reverse_lazy('home')
     template_name = 'books/deletebook.html'
 
 
 class UpdateBookView(UpdateView):
     model = Book
     form_class = UpdateBookForm
-    success_url = reverse_lazy('bookslist')
+    success_url = reverse_lazy('home')
     template_name = 'books/updatebook.html'
 
 
 class DetailBookView(DetailView):
     model = Book
-    success_url = reverse_lazy('bookslist')
+    success_url = reverse_lazy('home')
     template_name = 'books/detailbook.html'
 
 

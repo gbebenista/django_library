@@ -3,44 +3,73 @@
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static '/css/font-awesome.min.css' %}">
-    <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
-    <script src="{% static 'js/books.js' %}"></script>
+    <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script defer src="{% static 'fontawesome/js/all.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/books.js' %}"></script>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+    </style>
 </head>
-<body class="bg-light m-auto">
-<header class="shadow bg-dark text-white row mb-5">
-    <h3 class="font-weight-light text-center col-1 m-auto">Bookcase</h3>
-    <form action="{% url 'bookslist' %}" method="get" class="col-3 m-auto">
+{% csrf_token %}
+<body class="bg-light">
+<header class="shadow bg-dark text-white row mb-4 p-2">
+    <h3 class="font-weight-light text-center col-2 m-auto">
+        <a href="{% url 'home' %}" class="text-white text-decoration-none">Bookcase</a>
+    </h3>
+    <form action="{% url 'home' %}" method="get" class="col-6 m-auto">
         <div class="input-group">
-            <input name="q" type="text" class="form-control" placeholder="Search book by author, title, publisher, tag..."/>
+            <input name="q" type="text" class="form-control"
+                   placeholder="Search book by author, title, publisher... "/>
             <div class="input-group-append">
-                <button type="submit" class="btn btn-info">Search</button>
+                <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </form>
-    <nav class="navbar navbar-expand-lg navbar-light col-3">
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav bg-info rounded">
-                {% if user.is_superuser == True %}
-                    <li class="nav-item"><a href="{% url 'addbook' %}" class="nav-link text-white">ADD BOOK</a></li>
-                 {% endif %}
-                    <li class="nav-item"><a href="{% url 'bookslist' %}" class="nav-link text-white">Bookslist</a></li>
-                    <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link text-white">Logout</a></li>
-            </ul>
+    <div class="col-2 text-center">
+        <div class="dropdown">
+            <button type="button" class="btn btn-dark dropdown-toggle text-muted" data-toggle="dropdown">
+                {{user.username}}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'userbooks' %}">Your books</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            </div>
         </div>
-    </nav>
-    <div class="dropdown h5 font-weight-light text-muted col-2 m-auto ">Hello, {{user.username}}!</div>
-    <a class="text-decoration-none col-1 m-auto" href="{% url 'userbooks' %}">Your books</a>
-    <a class="h4 col-1 m-auto" href="{% url 'basketlist' user.id %}"><i class="fa fa-shopping-basket btn disabled"  id="userbasket" ></i></a>
+    </div>
+    <a class="col-1 m-auto btn btn-dark" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip" title="Your basket">
+        <i class="fa fa-shopping-basket"></i>
+    </a>
 </header>
 <main>
     {% block content %}
     {% endblock %}
 </main>
+<script>
+$(document).ready(function(){
+$('[data-toggle="tooltip"]').tooltip();
+});
+$(document).ready(function(){
+const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+$.ajax({
+      type:"POST",
+      url: "{% url 'checkbasket'%}",
+      data:{'csrfmiddlewaretoken': csrftoken},
+      dataType: 'json',
+      success: function(data){
+        if (data.success){
+            $('#userbasket').removeClass('disabled');
+        }
+        else{
+            $('#userbasket').addClass('disabled');
+        }
+      }
+    });
+});
 {% block javascript %}
-
 {% endblock %}
+</script>
 </body>
 </html>

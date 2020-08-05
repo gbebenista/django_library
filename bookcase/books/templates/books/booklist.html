@@ -1,7 +1,7 @@
 {% extends 'books/base.html' %}
 {% block title %}Books list{% endblock %}
 {% block javascript %}
-<script>
+
 $('.basket').click(function(){
     var bookid = $(this).attr("data-catid");
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
@@ -18,10 +18,8 @@ $('.basket').click(function(){
             $('#status'+bookid).text("In basket");
             $('#status'+bookid).removeClass('text-success');
             $('#status'+bookid).addClass('text-warning');
-            $('#basket'+bookid).removeClass('btn btn-success');
-            $('#basket'+bookid).addClass('btn btn-success disabled');
-            $('#userbasket').removeClass('btn disabled');
-            $('#userbasket').addClass('btn active text-white');
+            $('#basket'+bookid).addClass('btn btn-warning disabled');
+            $('#userbasket').removeClass('disabled');
         }
         else{
             alert("There is an error occurred");
@@ -29,11 +27,15 @@ $('.basket').click(function(){
       }
     });
 });
-</script>
+
 {% endblock %}
 {% block content %}
 {% csrf_token %}
 <div class="p-4 m-auto h5 font-weight-light">
+    {% if user.is_superuser == True %}
+    <a href="{% url 'addbook' %}" class="btn btn-info text-white text-decoration-none m-2"><i
+            class="fa fa-plus-square mr-2"></i>ADD BOOK</a>
+    {% endif %}
     <div class="shadow bg-white rounded">
         <table class="table">
             <thead>
@@ -55,31 +57,42 @@ $('.basket').click(function(){
             {% for object in page_obj %}
             <tr>
                 <th>{{ object.author }}</th>
-                <th><a href="{% url 'detailbook' object.id %}" class="text-decoration-none text-dark">{{ object.title }}</a></th>
+                <th>{{ object.title}}</th>
                 <th>{{ object.publisher }}</th>
                 {% if object.is_loaned == False %}
                 <th>
                     <span class="text-success font-weight-normal" id="status{{ object.id }}">Ready to loan</span>
                 </th>
                 <th>
-                    <span class="basket btn btn-success" data-catid="{{ object.id }}" id="basket{{ object.id }}"><i class="fa fa-shopping-basket"></i></span>
+                    <span class="basket btn btn-success" data-toggle="tooltip" title="Add to basket"
+                          data-catid="{{ object.id }}" id="basket{{ object.id }}">
+                        <i class="fa fa-shopping-basket"></i>
+                    </span>
                 </th>
                 {% else %}
                 <th>
                     <span class="status text-danger font-weight-normal">Loaned</span>
                 </th>
                 <th>
-                    <span class="basket btn btn-success disabled"><i class="fa fa-shopping-basket"></i></span>
+                    <span class="basket btn btn-danger disabled" data-toggle="tooltip" title="Add to basket">
+                        <i class="fa fa-shopping-basket"></i>
+                    </span>
                 </th>
                 {% endif %}
                 {% if perms.books.delete_book %}
                 <th>
-                    <a href="{% url 'deletebook' object.id %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                    <a href="{% url 'deletebook' object.id %}" class="btn btn-danger" data-toggle="tooltip"
+                       title="Delete book">
+                        <i class="fa fa-trash"></i>
+                    </a>
                 </th>
                 {% endif %}
                 {% if perms.books.change_book %}
                 <th>
-                    <a href="{% url 'updatebook' object.id %}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+                    <a href="{% url 'updatebook' object.id %}" class="btn btn-info" data-toggle="tooltip"
+                       title="Edit book">
+                        <i class="fa fa-edit"></i>
+                    </a>
                 </th>
                 {% endif %}
             </tr>
