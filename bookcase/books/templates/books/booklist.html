@@ -1,15 +1,12 @@
 {% extends 'books/base.html' %}
 {% block title %}Books list{% endblock %}
 {% block javascript %}
-$(document).ready(function(){
-
-});
 $('.basket').click(function(){
     var bookid = $(this).attr("data-catid");
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
       type:"POST",
-      url: "{% url 'addtobasket'%}",
+      url: "{% url 'addtobasket' %}",
       data:{
       'csrfmiddlewaretoken': csrftoken,
       'book_id': bookid,
@@ -58,18 +55,18 @@ $('.basket').click(function(){
             </tr>
             </thead>
             <tbody>
-            {% for object in page_obj %}
+            {% for book in page_obj %}
             <tr>
-                <th>{{ object.author }}</th>
-                <th>{{ object.title}}</th>
-                <th>{{ object.publisher }}</th>
-                {% if object.is_loaned == False %}
+                <th>{{ book.author }}</th>
+                <th>{{ book.title}}</th>
+                <th>{{ book.publisher }}</th>
+                {% if book.is_loaned == False %}
                 <th>
-                    <span class="text-success font-weight-normal" id="status{{ object.id }}">Ready to loan</span>
+                    <span class="text-success font-weight-normal" id="status{{ book.id }}">Available</span>
                 </th>
                 <th>
                     <span class="basket btn btn-success" data-toggle="tooltip" title="Add to basket"
-                          data-catid="{{ object.id }}" id="basket{{ object.id }}">
+                          data-catid="{{ book.id }}" id="basket{{ book.id }}">
                         <i class="fa fa-shopping-basket"></i>
                     </span>
                 </th>
@@ -85,7 +82,7 @@ $('.basket').click(function(){
                 {% endif %}
                 {% if perms.books.delete_book %}
                 <th>
-                    <a href="{% url 'deletebook' object.id %}" class="btn btn-danger" data-toggle="tooltip"
+                    <a href="{% url 'deletebook' book.id %}" class="btn btn-danger" data-toggle="tooltip"
                        title="Delete book">
                         <i class="fa fa-trash"></i>
                     </a>
@@ -93,7 +90,7 @@ $('.basket').click(function(){
                 {% endif %}
                 {% if perms.books.change_book %}
                 <th>
-                    <a href="{% url 'updatebook' object.id %}" class="btn btn-info" data-toggle="tooltip"
+                    <a href="{% url 'updatebook' book.id %}" class="btn btn-info" data-toggle="tooltip"
                        title="Edit book">
                         <i class="fa fa-edit"></i>
                     </a>
@@ -113,6 +110,10 @@ $('.basket').click(function(){
     </div>
     <div class="pagination d-flex justify-content-center">
         <span class="step-links">
+            {% if page_obj.number == 1 %}
+            <a href="#" class="btn btn-info disabled">&laquo; first</a>
+            <a href="#" class="btn btn-info disabled">previous</a>
+            {% endif %}
             {% if page_obj.has_previous %}
                 <a href="?page=1" class="btn btn-info">&laquo; first</a>
                 <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-info">previous</a>
@@ -123,6 +124,10 @@ $('.basket').click(function(){
             {% if page_obj.has_next %}
                 <a href="?page={{ page_obj.next_page_number }}" class="btn btn-info">next</a>
                 <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-info">last &raquo;</a>
+            {% endif %}
+            {% if page_obj.number == page_obj.paginator.num_pages %}
+                <a href="#" class="btn btn-info disabled">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-info disabled">last &raquo;</a>
             {% endif %}
         </span>
     </div>

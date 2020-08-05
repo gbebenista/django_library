@@ -4,11 +4,14 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView, RedirectView
+from django.views.generic.detail import SingleObjectMixin
+
 from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book, UserBasket
 
 
-# TODO: jak książka w koszyku, to ustawiona status w tabeli na loaned, link na całym wierszu książki, jak nie ma książki w koszyku to usunąć koszyk, jak książka jest wypożyczona to inny user nie może wypożyczyć (bo teraz to nadpisuje)
+# TODO: jak książka w koszyku, to ustawiona status w tabeli na loaned, link na całym wierszu książki jak książka jest wypożyczona to inny user nie może wypożyczyć (bo teraz to nadpisuje)
+# TODO: books_userbasket_books na uuid4
 
 
 class CheckBasketMixin:
@@ -22,10 +25,21 @@ class CheckBasketMixin:
         return basket
 
 
+# class IsBookInBasketMixin:
+#     def get_context_data(self):
+#         context = super(IsBookInBasketMixin, self).get_context_data()
+#         context['is_in_basket'] = self.is_book_in_basket(self.request.user, self.object_list)
+#         return context
+#
+#     def is_book_in_basket(self, user, books):
+#
+#         return
+
+
 class ListBookView(CheckBasketMixin, ListView):
     model = Book
     template_name = 'books/booklist.html'
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         query = self.request.GET.get('q')
@@ -53,13 +67,6 @@ class SendToBasketView(RedirectView):
         return JsonResponse({'success': False})
 
 
-# class CheckIfInBasketView(RedirectView):
-#     def post(self, request, *args, **kwargs):
-#         if request.is_ajax:
-#             return JsonResponse({"success": True})
-#         return JsonResponse({"success": False})
-
-
 class BasketListView(CheckBasketMixin, ListView):
     model = UserBasket
     template_name = 'books/basketlist.html'
@@ -75,6 +82,9 @@ class DeleteFromBasketView(RedirectView):
             book = Book.objects.get(id=request.POST.get('book_id'))
             basket = UserBasket.objects.get(user_id=request.user)
             basket.books.remove(book)
+            basket.books.count()
+            if basket.books.count() == 0:
+                basket.delete()
             return JsonResponse({"success": True})
         return JsonResponse({"success": False})
 

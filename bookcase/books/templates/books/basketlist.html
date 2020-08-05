@@ -2,27 +2,27 @@
 {% block title %}Basket{% endblock %}
 {% block javascript %}
 $('.deletefrombasket').click(function(){
-    var bookid = $(this).attr('data-catid');
-    const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-    $.ajax({
-      type:"POST",
-      url: "{% url 'deletefrombasket'%}",
-      data:{
-      'csrfmiddlewaretoken': csrftoken,
-      'book_id': bookid,
-      },
-      dataType: 'json',
-      success: function(data){
-        if (data.success){
-            setTimeout(function(){
-                location.reload();
-            }, 100);
-        }
-        else{
-            alert("There is an error occurred");
-        }
-      }
-    });
+var bookid = $(this).attr('data-catid');
+const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+$.ajax({
+type:"POST",
+url: "{% url 'deletefrombasket'%}",
+data:{
+'csrfmiddlewaretoken': csrftoken,
+'book_id': bookid,
+},
+dataType: 'json',
+success: function(data){
+if (data.success){
+setTimeout(function(){
+location.reload();
+}, 100);
+}
+else{
+alert("There is an error occurred");
+}
+}
+});
 });
 {% endblock %}
 {% block content %}
@@ -46,7 +46,8 @@ $('.deletefrombasket').click(function(){
             <th scope="col">{{books.author}}</th>
             <th scope="col">{{books.publisher}}</th>
             <th scope="col">
-                <span class="btn btn-danger deletefrombasket" data-catid="{{books.id}}" data-toggle="tooltip" title="Delete from basket">
+                <span class="btn btn-danger deletefrombasket" data-catid="{{books.id}}" data-toggle="tooltip"
+                      title="Delete from basket">
                     <i class="fa fa-minus-circle"></i>
                 </span>
             </th>
@@ -56,13 +57,12 @@ $('.deletefrombasket').click(function(){
             <th scope="col">Empty</th>
         </tr>
         </tbody>
-            {% endfor %}
-        {% empty %}
-        <tr>
-            <th scope="col">You have any basket available</th>
-        </tr>
         {% endfor %}
     </table>
     <a href="{% url 'setloaned' %}" class="btn btn-info borrow" data-toggle="tooltip" title="Borrow book!">Borrow</a>
+    {% empty %}
+    <p class="text-center"> Your basket is deleted </p>
+    {% endfor %}
+
 </div>
 {% endblock %}
