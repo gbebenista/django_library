@@ -60,8 +60,6 @@ $('.basket').click(function(){
             </thead>
             <tbody>
             {% for book in page_obj %}
-            {% if book.userbasket_set.all %}
-            {% endif %}
             <tr>
                 <th>{{ book.author }}</th>
                 <th>{{ book.title}}</th>
