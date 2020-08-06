@@ -1,3 +1,5 @@
+from re import template
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import JsonResponse
@@ -6,10 +8,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView, RedirectView
 from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book, UserBasket
+from django import template
 
 
 # TODO:
-#  jak książka w koszyku, to ustawiony status w tabeli na loaned
 #  link na całym wierszu książki
 
 
@@ -22,17 +24,6 @@ class CheckBasketMixin:
     def is_userbasket_exist(self, user):
         basket = UserBasket.objects.filter(user_id=user).exists()
         return basket
-
-
-# class IsBookInBasketMixin:
-#     def get_context_data(self):
-#         context = super(IsBookInBasketMixin, self).get_context_data()
-#         context['is_in_basket'] = self.is_book_in_basket(self.request.user, self.object_list)
-#         return context
-#
-#     def is_book_in_basket(self, user, books):
-#
-#         return
 
 
 class ListBookView(CheckBasketMixin, ListView):
@@ -93,7 +84,7 @@ class SetBookToLoanedView(RedirectView):
         basket = UserBasket.objects.get(user_id=request.user)
         for book in basket.books.all():
             if book.is_loaned == True:
-                return redirect("basketlist", pk=request.user)
+                return redirect("basketlist", pk=request.user.id)
         for book in basket.books.all():
             if book.is_loaned == False:
                 book.is_loaned = True

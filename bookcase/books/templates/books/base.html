@@ -8,7 +8,9 @@
     <script defer src="{% static 'fontawesome/js/all.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/books.js' %}"></script>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>
+        {% block title %}{% endblock %}
+    </title>
     <style>
     </style>
 </head>
@@ -40,12 +42,14 @@
         </div>
     </div>
     {% if is_userbasket_exist == False %}
-    <a class="col-1 m-auto btn btn-dark disabled" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip" title="Your basket">
+    <a class="col-1 m-auto btn btn-dark disabled" href="{% url 'basketlist' user.id %}" id="userbasket"
+       data-toggle="tooltip" title="Your basket">
         {% else %}
-        <a class="col-1 m-auto btn btn-dark" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip" title="Your basket">
+        <a class="col-1 m-auto btn btn-dark" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip"
+           title="Your basket">
             {% endif %}
-        <i class="fa fa-shopping-basket h4 m-auto"></i>
-    </a>
+            <i class="fa fa-shopping-basket h4 m-auto"></i>
+        </a>
 </header>
 <main>
     {% block content %}

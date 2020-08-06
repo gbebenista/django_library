@@ -5,27 +5,27 @@ $('.basket').click(function(){
     var bookid = $(this).attr("data-catid");
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
-      type:"POST",
-      url: "{% url 'addtobasket' %}",
-      data:{
-      'csrfmiddlewaretoken': csrftoken,
-      'book_id': bookid,
-      },
-      dataType: 'json',
-      success: function(data){
-        if (data.success){
-            $('#status'+bookid).text("In basket");
-            $('#status'+bookid).removeClass('text-success');
-            $('#status'+bookid).addClass('text-warning');
-            $('#basket'+bookid).addClass('btn btn-warning disabled');
-            if($('#userbasket').hasClass('disabled')){
+        type:"POST",
+        url: "{% url 'addtobasket' %}",
+        data:{
+            'csrfmiddlewaretoken': csrftoken,
+            'book_id': bookid,
+            },
+        dataType: 'json',
+        success: function(data){
+            if (data.success){
+                $('#status'+bookid).text("In basket");
+                $('#status'+bookid).removeClass('text-success');
+                $('#status'+bookid).addClass('text-warning');
+                $('#basket'+bookid).addClass('btn btn-warning disabled');
+                if($('#userbasket').hasClass('disabled')){
                 $('#userbasket').removeClass('disabled');
                 }
-        }
-        else{
+            }
+            else{
             alert("There is an error occurred");
+            }
         }
-      }
     });
 });
 <!--function linkToDetailBook(event) {-->
@@ -33,6 +33,7 @@ $('.basket').click(function(){
 <!--  event.stopPropagation();-->
 <!--}-->
 {% endblock %}
+{% load filter %}
 {% block content %}
 {% csrf_token %}
 <div class="p-4 m-auto h5 font-weight-light">
@@ -59,11 +60,23 @@ $('.basket').click(function(){
             </thead>
             <tbody>
             {% for book in page_obj %}
+            {% if book.userbasket_set.all %}
+            {% endif %}
             <tr>
                 <th>{{ book.author }}</th>
                 <th>{{ book.title}}</th>
                 <th>{{ book.publisher }}</th>
-                {% if book.is_loaned == False %}
+                {% if book.userbasket_set|userbasket:user.id %}
+                <th>
+                    <span class="text-warning font-weight-normal" id="status{{ book.id }}">In basket</span>
+                </th>
+                <th>
+                    <span class="basket btn btn-warning disabled" data-toggle="tooltip" title="Add to basket"
+                          data-catid="{{ book.id }}" id="basket{{ book.id }}">
+                        <i class="fa fa-shopping-basket"></i>
+                    </span>
+                </th>
+                {% elif book.is_loaned == False %}
                 <th>
                     <span class="text-success font-weight-normal" id="status{{ book.id }}">Available</span>
                 </th>

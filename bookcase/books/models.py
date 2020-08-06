@@ -33,4 +33,4 @@ class UserBasket(models.Model):
     books = models.ManyToManyField(Book)
 
     def __str__(self):
-        return self.books
+        return self.user_id.__str__()
