@@ -4,14 +4,13 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView, RedirectView
-from django.views.generic.detail import SingleObjectMixin
-
 from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book, UserBasket
 
 
-# TODO: jak książka w koszyku, to ustawiona status w tabeli na loaned, link na całym wierszu książki jak książka jest wypożyczona to inny user nie może wypożyczyć (bo teraz to nadpisuje)
-# TODO: books_userbasket_books na uuid4
+# TODO:
+#  jak książka w koszyku, to ustawiony status w tabeli na loaned
+#  link na całym wierszu książki
 
 
 class CheckBasketMixin:
@@ -92,9 +91,11 @@ class DeleteFromBasketView(RedirectView):
 class SetBookToLoanedView(RedirectView):
     def get(self, request, **response_kwargs):
         basket = UserBasket.objects.get(user_id=request.user)
-        for b in basket.books.all():
-            if b.is_loaned == False:
-                book = Book.objects.get(id=b.id)
+        for book in basket.books.all():
+            if book.is_loaned == True:
+                return redirect("basketlist", pk=request.user)
+        for book in basket.books.all():
+            if book.is_loaned == False:
                 book.is_loaned = True
                 book.loaner_user = request.user
                 book.save()
@@ -102,26 +103,26 @@ class SetBookToLoanedView(RedirectView):
         return redirect("home")
 
 
-class CreationBookView(CreateView):
+class CreationBookView(CheckBasketMixin, CreateView):
     form_class = CreateBookForm
     success_url = reverse_lazy('home')
     template_name = 'books/createbook.html'
 
 
-class DeleteBookView(DeleteView):
+class DeleteBookView(CheckBasketMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('home')
     template_name = 'books/deletebook.html'
 
 
-class UpdateBookView(UpdateView):
+class UpdateBookView(CheckBasketMixin, UpdateView):
     model = Book
     form_class = UpdateBookForm
     success_url = reverse_lazy('home')
     template_name = 'books/updatebook.html'
 
 
-class DetailBookView(DetailView):
+class DetailBookView(CheckBasketMixin, DetailView):
     model = Book
     success_url = reverse_lazy('home')
     template_name = 'books/detailbook.html'

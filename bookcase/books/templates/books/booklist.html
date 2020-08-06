@@ -28,7 +28,10 @@ $('.basket').click(function(){
       }
     });
 });
-
+<!--function linkToDetailBook(event) {-->
+<!--  window.location='{% url 'addbook' %}'-->
+<!--  event.stopPropagation();-->
+<!--}-->
 {% endblock %}
 {% block content %}
 {% csrf_token %}
@@ -100,10 +103,7 @@ $('.basket').click(function(){
             </tbody>
             {% empty %}
             <tr>
-                <th></th>
-                <th></th>
-                <th>Empty</th>
-                <th></th>
+                <th colspan="4" class="text-center">Empty</th>
             </tr>
             {% endfor %}
         </table>
