@@ -1,5 +1,3 @@
-from re import template
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import JsonResponse
@@ -8,15 +6,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView, RedirectView
 from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book, UserBasket
-from django import template
-
-
-# TODO:
-#  link na całym wierszu książki
 
 
 class CheckBasketMixin:
-    def get_context_data(self):
+    def get_context_data(self, **kwargs):
         context = super(CheckBasketMixin, self).get_context_data()
         context['is_userbasket_exist'] = self.is_userbasket_exist(self.request.user)
         return context

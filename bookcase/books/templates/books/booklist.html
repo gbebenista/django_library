@@ -1,7 +1,8 @@
 {% extends 'books/base.html' %}
 {% block title %}Books list{% endblock %}
 {% block javascript %}
-$('.basket').click(function(){
+$('.basket').click(function(event){
+    event.stopImmediatePropagation();
     var bookid = $(this).attr("data-catid");
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
@@ -28,10 +29,6 @@ $('.basket').click(function(){
         }
     });
 });
-<!--function linkToDetailBook(event) {-->
-<!--  window.location='{% url 'addbook' %}'-->
-<!--  event.stopPropagation();-->
-<!--}-->
 {% endblock %}
 {% load filter %}
 {% block content %}
@@ -60,7 +57,7 @@ $('.basket').click(function(){
             </thead>
             <tbody>
             {% for book in page_obj %}
-            <tr>
+            <tr onclick="window.location='{% url 'detailbook' book.id %}'; event.stopPropagation();">
                 <th>{{ book.author }}</th>
                 <th>{{ book.title}}</th>
                 <th>{{ book.publisher }}</th>

@@ -1,5 +1,4 @@
 from django import template
-from books.models import UserBasket
 
 register = template.Library()
 
