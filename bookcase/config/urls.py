@@ -22,5 +22,5 @@ urlpatterns = [
     path('account/', include('users.urls')),
     path('', include('books.urls')),
     path('login/', ViewLogin.as_view(), name='login'),
-    path('', include('allauth.urls')),
+    path('accounts/', include('allauth.urls')),
 ]
