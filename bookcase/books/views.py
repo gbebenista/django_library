@@ -19,7 +19,12 @@ class CheckBasketMixin:
         return basket
 
 
-class ListBookView(CheckBasketMixin, ListView):
+class CheckIfLoggedMixin(LoginRequiredMixin):
+    login_url = reverse_lazy('login')
+
+
+class ListBookView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
+    login_url = reverse_lazy('login')
     model = Book
     template_name = 'books/booklist.html'
     paginate_by = 10
@@ -50,7 +55,7 @@ class SendToBasketView(RedirectView):
         return JsonResponse({'success': False})
 
 
-class BasketListView(CheckBasketMixin, ListView):
+class BasketListView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
     model = UserBasket
     template_name = 'books/basketlist.html'
 
@@ -72,7 +77,7 @@ class DeleteFromBasketView(RedirectView):
         return JsonResponse({"success": False})
 
 
-class SetBookToLoanedView(RedirectView):
+class SetBookToLoanedView(CheckIfLoggedMixin, RedirectView):
     def get(self, request, **response_kwargs):
         basket = UserBasket.objects.get(user_id=request.user)
         for book in basket.books.all():
@@ -87,37 +92,32 @@ class SetBookToLoanedView(RedirectView):
         return redirect("home")
 
 
-class CreationBookView(CheckBasketMixin, CreateView):
+class CreationBookView(CheckIfLoggedMixin, CheckBasketMixin, CreateView):
     form_class = CreateBookForm
     success_url = reverse_lazy('home')
     template_name = 'books/createbook.html'
 
 
-class DeleteBookView(CheckBasketMixin, DeleteView):
+class DeleteBookView(CheckIfLoggedMixin, CheckBasketMixin, DeleteView):
     model = Book
     success_url = reverse_lazy('home')
     template_name = 'books/deletebook.html'
 
 
-class UpdateBookView(CheckBasketMixin, UpdateView):
+class UpdateBookView(CheckIfLoggedMixin, CheckBasketMixin, UpdateView):
     model = Book
     form_class = UpdateBookForm
     success_url = reverse_lazy('home')
     template_name = 'books/updatebook.html'
 
 
-class DetailBookView(CheckBasketMixin, DetailView):
+class DetailBookView(CheckIfLoggedMixin, CheckBasketMixin, DetailView):
     model = Book
     success_url = reverse_lazy('home')
     template_name = 'books/detailbook.html'
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
-    login_url = reverse_lazy('login')
-    template_name = 'books/base.html'
-
-
-class LoanedByUserView(CheckBasketMixin, ListView):
+class LoanedByUserView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
     model = Book
     template_name = 'books/userbookslist.html'
 
