@@ -21,6 +21,7 @@ class Book(models.Model):
     publisher = models.CharField(max_length=100)
     tags = TaggableManager(through=UUIDTaggedItem)
     is_loaned = models.BooleanField(default=False)
+    loaned_date = models.DateField(null=True, blank=True)
     loaner_user = models.ForeignKey('users.CustomUser', models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
