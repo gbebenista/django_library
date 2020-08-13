@@ -138,9 +138,6 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, "static")
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, "users/sent_emails")
-
 AUTHENTICATION_BACKENDS = (
     'bookcase.users.backends.LoginByEmailOrUsername',
     'django.contrib.auth.backends.ModelBackend',
@@ -171,3 +168,10 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_IGNORE_RESULT = False
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'testdjangobookcase@gmail.com'
+EMAIL_HOST_PASSWORD = 'zaqwsx123!'

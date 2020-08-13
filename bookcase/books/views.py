@@ -1,11 +1,10 @@
-from datetime import datetime
-
+import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView, RedirectView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, RedirectView
 from books.forms import CreateBookForm, UpdateBookForm
 from books.models import Book, UserBasket
 
@@ -88,7 +87,7 @@ class SetBookToLoanedView(CheckIfLoggedMixin, RedirectView):
         for book in basket.books.all():
             if book.is_loaned == False:
                 book.is_loaned = True
-                book.loaned_date = datetime.today()
+                book.loaned_date = datetime.date.today()
                 book.loaner_user = request.user
                 book.save()
         basket.delete()

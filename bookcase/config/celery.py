@@ -19,3 +19,11 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
+
+app.conf.beat_schedule = {
+    'send-mail-to-loaner-to-return-book': {
+        'task': 'send_remainder_to_return_book',
+        'schedule': 5.0,
+        # 'schedule': crontab(minute='1'),
+    }
+}
