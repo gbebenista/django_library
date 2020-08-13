@@ -115,7 +115,6 @@ class UpdateBookView(CheckIfLoggedMixin, CheckBasketMixin, UpdateView):
 
 class DetailBookView(CheckIfLoggedMixin, CheckBasketMixin, DetailView):
     model = Book
-    success_url = reverse_lazy('home')
     template_name = 'books/detailbook.html'
 
 
@@ -129,7 +128,7 @@ class LoanedByUserView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
 
 
 class UserGiveBackBookView(RedirectView):
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         if request.is_ajax:
             book = Book.objects.get(id=request.POST.get('book_id'))
             book.is_loaned = False

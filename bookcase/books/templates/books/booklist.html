@@ -1,34 +1,6 @@
 {% extends 'books/base.html' %}
 {% block title %}Books list{% endblock %}
 {% block javascript %}
-$('.basket').click(function(event){
-    event.stopImmediatePropagation();
-    var bookid = $(this).attr("data-catid");
-    const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-    $.ajax({
-        type:"POST",
-        url: "{% url 'addtobasket' %}",
-        data:{
-            'csrfmiddlewaretoken': csrftoken,
-            'book_id': bookid,
-            },
-        dataType: 'json',
-        success: function(data){
-            if (data.success){
-                $('#status'+bookid).text("In basket");
-                $('#status'+bookid).removeClass('text-success');
-                $('#status'+bookid).addClass('text-warning');
-                $('#basket'+bookid).addClass('btn btn-warning disabled');
-                if($('#userbasket').hasClass('disabled')){
-                $('#userbasket').removeClass('disabled');
-                }
-            }
-            else{
-            alert("There is an error occurred");
-            }
-        }
-    });
-});
 {% endblock %}
 {% load filter %}
 {% block content %}
@@ -57,7 +29,7 @@ $('.basket').click(function(event){
             </thead>
             <tbody>
             {% for book in page_obj %}
-            <tr onclick="window.location='{% url 'detailbook' book.id %}'; event.stopPropagation();">
+            <tr data-catid="{{ book.id }}" class="details">
                 <th>{{ book.author }}</th>
                 <th>{{ book.title}}</th>
                 <th>{{ book.publisher }}</th>

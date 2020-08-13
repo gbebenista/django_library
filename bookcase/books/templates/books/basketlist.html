@@ -1,36 +1,6 @@
 {% extends 'books/base.html' %}
 {% block title %}Basket{% endblock %}
 {% block javascript %}
-$(document).ready(function(){
-    var isAnyBookLoaned = $('.warning').attr('data-loaned');
-    console.log(isAnyBookLoaned);
-    if (isAnyBookLoaned == "true"){
-    $('.borrow').addClass('disabled');
-    }
-});
-$('.deletefrombasket').click(function(){
-var bookId = $(this).attr('data-catid');
-const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
-$.ajax({
-type:"POST",
-url: "{% url 'deletefrombasket'%}",
-data:{
-'csrfmiddlewaretoken': csrftoken,
-'book_id': bookId,
-},
-dataType: 'json',
-success: function(data){
-if (data.success){
-setTimeout(function(){
-location.reload();
-}, 100);
-}
-else{
-alert("There is an error occurred");
-}
-}
-});
-});
 {% endblock %}
 {% block content %}
 {% csrf_token %}

@@ -1,11 +1,21 @@
 {% extends 'books/base.html' %}
-
 {% block title %}Detail book{% endblock %}
+{% block javascript %}
+{% endblock %}
 {% block content %}
+{% csrf_token %}
 <div class="shadow bg-white rounded p-4 m-auto w-50 text-center">
     <h3>{{ object.title }}</h3>
     <p> Author: {{ object.author }}</p>
     <p> Publisher: {{ object.publisher }}</p>
     <p> Tags: {% for tag in object.tags.all %} <span class="badge badge-info">{{tag}}</span> {% endfor %}</p>
+
+    {% if object.loaner_user_id == user.id %}
+    <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip" title="Give back">
+        <i class="fa fa-undo"></i>
+    </span>
+    {% endif %}
 </div>
+
+
 {% endblock %}
