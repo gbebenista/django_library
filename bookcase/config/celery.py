@@ -23,7 +23,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'send-mail-to-loaner-to-return-book': {
         'task': 'send_remainder_to_return_book',
-        'schedule': 5.0,
-        # 'schedule': crontab(minute='1'),
+        'schedule': crontab(hour='7'),
     }
 }

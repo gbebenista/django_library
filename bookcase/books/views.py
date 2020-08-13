@@ -35,8 +35,8 @@ class ListBookView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
         if not query:
             return Book.objects.all().order_by('title')
         object_list = Book.objects.filter(
-            Q(title__icontains=query) | Q(author__icontains=query) | Q(publisher__icontains=query)
-        )
+            Q(tags__name__icontains=query) | Q(title__icontains=query) | Q(author__icontains=query) | Q(publisher__icontains=query)
+        ).distinct()
         return object_list.order_by('title')
 
 
