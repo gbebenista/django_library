@@ -3,18 +3,31 @@
 {% block javascript %}
 {% endblock %}
 {% block content %}
+{% load filter %}
 {% csrf_token %}
 <div class="shadow bg-white rounded p-4 m-auto w-50 text-center">
     <h3>{{ object.title }}</h3>
     <p> Author: {{ object.author }}</p>
     <p> Publisher: {{ object.publisher }}</p>
     <p> Tags: {% for tag in object.tags.all %} <span class="badge badge-info">{{tag}}</span> {% endfor %}</p>
-
-    {% if object.loaner_user_id == user.id %}
-    <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip" title="Give back">
+    <p>
+        {% if object.loaner_user_id == user.id %}
+        <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip" title="Give back">
         <i class="fa fa-undo mr-1"></i>Return book
-    </span>
-    {% endif %}
+        </span>
+        {% endif %}
+        {% if book.userbasket_set|userbasket:user.id %}
+        <span class="basket btn btn-warning disabled" data-toggle="tooltip" title="In basket"
+              data-catid="{{ book.id }}" id="basket{{ book.id }}">
+                        <i class="fa fa-shopping-basket mr-1"></i>In basket
+        </span>
+        {% elif book.is_loaned == False %}
+        <span class="basket btn btn-success" data-toggle="tooltip" title="Add to basket"
+              data-catid="{{ book.id }}" id="basket{{ book.id }}">
+                        <i class="fa fa-shopping-basket mr-1"></i>Available
+        </span>
+        {% endif %}
+    <p>
 </div>
 
 

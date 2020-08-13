@@ -13,7 +13,9 @@ $(document).on("click", ".details", function(event){
     }
 )
 
-$(document).on("click", ".deletefrombasket", function(){
+//delete from basket
+$(document).on("click", ".deletefrombasket", function(event){
+    event.stopImmediatePropagation();
     var bookId = $(this).attr('data-catid');
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
@@ -36,13 +38,15 @@ $(document).on("click", ".deletefrombasket", function(){
         }
     });
 });
+
+// add to basket
 $(document).on("click", ".basket", function(event){
     event.stopImmediatePropagation();
     var bookid = $(this).attr("data-catid");
     const csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
     $.ajax({
         type:"POST",
-        url: "add_to_basket",
+        url: '/add_to_basket',
         data:{
             'csrfmiddlewaretoken': csrftoken,
             'book_id': bookid,
@@ -50,12 +54,21 @@ $(document).on("click", ".basket", function(event){
         dataType: 'json',
         success: function(data){
             if (data.success){
-                $('#status'+bookid).text("In basket");
-                $('#status'+bookid).removeClass('text-success');
-                $('#status'+bookid).addClass('text-warning');
-                $('#basket'+bookid).addClass('btn btn-warning disabled');
+                if ($('#status'+bookid).hasClass('text-success')){
+                    $('#status'+bookid).text("In basket");
+                    $('#status'+bookid).removeClass('text-success');
+                    $('#status'+bookid).addClass('text-warning');
+                    $('#basket'+bookid).addClass('btn btn-warning disabled');
+                }
+                else{
+                    $('#status'+bookid).text("Available");
+                    $('#status'+bookid).removeClass('text-warning');
+                    $('#status'+bookid).addClass('text-success');
+                    $('#basket'+bookid).removeClass('btn btn-warning disabled');
+                    $('#basket'+bookid).addClass('btn btn-succes');
+                }
                 if($('#userbasket').hasClass('disabled')){
-                $('#userbasket').removeClass('disabled');
+                    $('#userbasket').removeClass('disabled');
                 }
             }
             else{
@@ -64,6 +77,8 @@ $(document).on("click", ".basket", function(event){
         }
     });
 });
+
+//return book
 $(document).on("click", ".giveback", function(event){
     event.stopImmediatePropagation();
     var bookid = $(this).attr('data-catid');

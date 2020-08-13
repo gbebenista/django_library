@@ -40,7 +40,7 @@ class ListBookView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
         return object_list.order_by('title')
 
 
-class SendToBasketView(RedirectView):
+class AddOrRemoveFromBasketView(RedirectView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax:
             book = Book.objects.get(id=request.POST.get('book_id'))
@@ -50,8 +50,13 @@ class SendToBasketView(RedirectView):
                 create_basket.books.add(book)
                 create_basket.save()
                 return JsonResponse({"success": True})
-            basket.books.add(book)
+            if not book.userbasket_set.filter(user_id=basket.user_id).exists():
+                basket.books.add(book)
+            else:
+                basket.books.remove(book)
             basket.save()
+            if basket.books.count() == 0:
+                basket.delete()
             return JsonResponse({"success": True})
         return JsonResponse({'success': False})
 
@@ -132,6 +137,7 @@ class UserGiveBackBookView(RedirectView):
         if request.is_ajax:
             book = Book.objects.get(id=request.POST.get('book_id'))
             book.is_loaned = False
+            book.loaned_date = None
             book.loaner_user = None
             book.save()
             return JsonResponse({"success": True})

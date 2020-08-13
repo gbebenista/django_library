@@ -26,7 +26,7 @@
         </tr>
         <tr class="text-muted">
             {% else %}
-        <tr>
+        <tr data-catid="{{ books.id }}" class="details">
             {% endif %}
 
             <th scope="col">{{books.title}}</th>
