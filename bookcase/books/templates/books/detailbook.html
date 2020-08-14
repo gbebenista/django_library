@@ -5,11 +5,16 @@
 {% block content %}
 {% load filter %}
 {% csrf_token %}
-<div class="shadow bg-white rounded p-4 m-auto w-50 text-center">
+<div class="shadow bg-white rounded p-4 m-auto w-50">
     <h3>{{ object.title }}</h3>
     <p> Author: {{ object.author }}</p>
     <p> Publisher: {{ object.publisher }}</p>
-    <p> Tags: {% for tag in object.tags.all %} <span class="badge badge-info">{{tag}}</span> {% endfor %}</p>
+    <form action="{% url 'home' %}" method="GET">
+    <p> Tags: {% for tag in object.tags.all %}
+        <input type="submit" name="q" value="{{tag}}" class="btn btn-info">
+        {% endfor %}
+    </p>
+    </form>
     <p>
         {% if object.loaner_user_id == user.id %}
         <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip" title="Give back">
@@ -27,7 +32,7 @@
                         <i class="fa fa-shopping-basket mr-1"></i><span id="detail{{ book.id }}">Available</span>
         </span>
         {% endif %}
-    <p>
+    </p>
 </div>
 
 
