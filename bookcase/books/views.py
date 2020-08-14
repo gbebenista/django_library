@@ -35,8 +35,8 @@ class ListBookView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
         if not query:
             return Book.objects.all().order_by('title')
         object_list = Book.objects.filter(
-            Q(tags__name__icontains=query) | Q(title__icontains=query) | Q(author__icontains=query) | Q(publisher__icontains=query)
-        ).distinct()
+            Q(tags__name__icontains=query) | Q(title__icontains=query) | Q(author__icontains=query) |
+            Q(publisher__icontains=query)).distinct()
         return object_list.order_by('title')
 
 
@@ -85,17 +85,18 @@ class DeleteFromBasketView(RedirectView):
 
 class SetBookToLoanedView(CheckIfLoggedMixin, RedirectView):
     def get(self, request, **response_kwargs):
-        basket = UserBasket.objects.get(user_id=request.user)
-        for book in basket.books.all():
-            if book.is_loaned == True:
-                return redirect("basketlist", pk=request.user.id)
-        for book in basket.books.all():
-            if book.is_loaned == False:
-                book.is_loaned = True
-                book.loaned_date = datetime.date.today()
-                book.loaner_user = request.user
-                book.save()
-        basket.delete()
+        basket = UserBasket.objects.filter(user_id=request.user).first()
+        if basket:
+            for book in basket.books.all():
+                if book.is_loaned == True:
+                    return redirect("basketlist", pk=request.user.id)
+            for book in basket.books.all():
+                if book.is_loaned == False:
+                    book.is_loaned = True
+                    book.loaned_date = datetime.date.today()
+                    book.loaner_user = request.user
+                    book.save()
+            basket.delete()
         return redirect("home")
 
 
