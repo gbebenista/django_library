@@ -1,17 +1,13 @@
+//add tooltip
 $(document).ready(function(){
 $('[data-toggle="tooltip"]').tooltip();
 });
+// disable borrow button if some book has been already borrowed
 $(document).ready(function(){
-    var isAnyBookLoaned = $('.warning').attr('data-loaned');
-    if (isAnyBookLoaned == "true"){
+    if ($('.warning').attr('data-loaned') == "true"){
     $('.borrow').addClass('disabled');
     }
 });
-$(document).on("click", ".details", function(event){
-    var bookId = $(this).attr('data-catid');
-    window.location="detailbook/"+bookId;
-    }
-)
 
 //delete from basket
 $(document).on("click", ".deletefrombasket", function(event){

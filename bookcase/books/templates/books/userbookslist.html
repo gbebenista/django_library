@@ -7,7 +7,6 @@
 <div class="p-4 m-auto h5 font-weight-light">
     <p class="text-center">Your books</p>
     <table class="table shadow bg-white rounded">
-
         <thead>
         <tr>
             <th scope="col">Title</th>
@@ -23,15 +22,16 @@
             <th scope="col">{{object.author}}</th>
             <th scope="col">{{object.publisher}}</th>
             <th scope="col">
-                <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip" title="Give back">
+                <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip"
+                      title="Give back">
                     <i class="fa fa-undo"></i>
                 </span>
             </th>
         </tr>
-                {% empty %}
-                <tr>
-                    <th colspan="4" class="text-center">Empty</th>
-                </tr>
+        {% empty %}
+        <tr>
+            <th colspan="4" class="text-center">Empty</th>
+        </tr>
         </tbody>
         {% endfor %}
     </table>

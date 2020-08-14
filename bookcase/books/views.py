@@ -31,7 +31,7 @@ class ListBookView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
+        query = self.request.GET.get('search')
         if not query:
             return Book.objects.all().order_by('title')
         object_list = Book.objects.filter(

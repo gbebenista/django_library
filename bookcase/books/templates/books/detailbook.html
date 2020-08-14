@@ -11,7 +11,7 @@
     <p> Publisher: {{ object.publisher }}</p>
     <form action="{% url 'home' %}" method="GET">
     <p> Tags: {% for tag in object.tags.all %}
-        <input type="submit" name="q" value="{{tag}}" class="btn btn-info">
+        <input type="submit" name="search" value="{{tag}}" class="btn btn-info">
         {% endfor %}
     </p>
     </form>
@@ -34,6 +34,4 @@
         {% endif %}
     </p>
 </div>
-
-
 {% endblock %}

@@ -1,19 +1,9 @@
 from __future__ import absolute_import, unicode_literals
-from django.core.mail import send_mail, EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives
 import datetime
 from celery import shared_task
 from books.models import Book
 from django.template.loader import get_template
-from django.template import Context
-
-@shared_task(store_results=True)
-def add(x, y):
-    return x + y
-
-
-@shared_task(store_results=True)
-def count_books():
-    return Book.objects.count()
 
 
 @shared_task(store_results=True, name='send_remainder_to_return_book')
