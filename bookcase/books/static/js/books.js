@@ -9,12 +9,22 @@ $(document).ready(function(){
     $('.borrow').addClass('disabled');
     }
 });
+
 // link to books' details on whole row of table
 $(document).on("click", ".details", function(event){
     var bookId = $(this).attr('data-catid');
     window.location="detailbook/"+bookId;
+});
+
+// change button for return books text in users' books panel
+$(document).on('click', '.check', function(event){
+    if($('.check').is(':checked')){
+        $('.returnbooks').text("Return selected books");
     }
-)
+    else{
+        $('.returnbooks').text("Return all books");
+    }
+});
 
 //delete from basket
 $(document).on("click", ".deletefrombasket", function(event){

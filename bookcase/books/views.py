@@ -25,7 +25,6 @@ class CheckIfLoggedMixin(LoginRequiredMixin):
 
 
 class ListBookView(CheckIfLoggedMixin, CheckBasketMixin, ListView):
-    login_url = reverse_lazy('login')
     model = Book
     template_name = 'books/booklist.html'
     paginate_by = 10
@@ -76,7 +75,6 @@ class DeleteFromBasketView(RedirectView):
             book = Book.objects.get(id=request.POST.get('book_id'))
             basket = UserBasket.objects.get(user_id=request.user)
             basket.books.remove(book)
-            basket.books.count()
             if basket.books.count() == 0:
                 basket.delete()
             return JsonResponse({"success": True})
@@ -87,17 +85,36 @@ class SetBookToLoanedView(CheckIfLoggedMixin, RedirectView):
     def get(self, request, **response_kwargs):
         basket = UserBasket.objects.filter(user_id=request.user).first()
         if basket:
-            for book in basket.books.all():
+            books_in_basket = basket.books.all()
+            for book in books_in_basket:
                 if book.is_loaned == True:
                     return redirect("basketlist", pk=request.user.id)
-            for book in basket.books.all():
-                if book.is_loaned == False:
-                    book.is_loaned = True
-                    book.loaned_date = datetime.date.today()
-                    book.loaner_user = request.user
-                    book.save()
+            for book in books_in_basket:
+                book.is_loaned = True
+                book.loaned_date = datetime.date.today()
+                book.loaner_user = request.user
+                book.save()
             basket.delete()
         return redirect("home")
+
+
+class GiveBackAllOrSelectedUserBooks(CheckIfLoggedMixin, RedirectView):
+    def get(self, request, *args, **kwargs):
+        query = self.request.GET.getlist('whichbookreturn')
+        if not query:
+            userbooks = Book.objects.filter(Q(loaner_user=self.request.user))
+            for book in userbooks:
+                book.is_loaned = False
+                book.loaned_date = None
+                book.loaner_user = None
+                book.save()
+        for bookid in query:
+            book_checked_to_return = Book.objects.get(id=bookid)
+            book_checked_to_return.is_loaned = False
+            book_checked_to_return.loaned_date = None
+            book_checked_to_return.loaner_user = None
+            book_checked_to_return.save()
+        return redirect("userbooks")
 
 
 class CreationBookView(CheckIfLoggedMixin, CheckBasketMixin, CreateView):

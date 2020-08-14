@@ -10,8 +10,8 @@
         {% for object in object_list %}
         <thead>
         <tr>
-            <th scope="col">Title</th>
             <th scope="col">Author</th>
+            <th scope="col">Title</th>
             <th scope="col">Publisher</th>
             <th scope="col"></th>
         </tr>
@@ -26,12 +26,12 @@
         </tr>
         <tr class="text-muted">
             {% else %}
-        <tr data-catid="{{ books.id }}" class="details">
+        <tr>
             {% endif %}
-            <th scope="col">{{books.title}}</th>
-            <th scope="col">{{books.author}}</th>
-            <th scope="col">{{books.publisher}}</th>
-            <th scope="col">
+            <th>{{books.author}}</th>
+            <th data-catid="{{ books.id }}" class="details">{{books.title}}</th>
+            <th>{{books.publisher}}</th>
+            <th>
                 <span class="btn btn-danger deletefrombasket" data-catid="{{books.id}}" data-toggle="tooltip"
                       title="Delete from basket">
                     <i class="fa fa-minus-circle"></i>

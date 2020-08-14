@@ -29,9 +29,9 @@
             </thead>
             <tbody>
             {% for book in page_obj %}
-            <tr data-catid="{{ book.id }}" class="details">
+            <tr>
                 <th>{{ book.author }}</th>
-                <th>{{ book.title}}</th>
+                <th data-catid="{{ book.id }}" class="details">{{ book.title}}</th>
                 <th>{{ book.publisher }}</th>
                 {% if book.userbasket_set|userbasket:user.id %}
                 <th>

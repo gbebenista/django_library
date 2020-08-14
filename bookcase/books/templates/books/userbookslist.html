@@ -9,31 +9,52 @@
     <table class="table shadow bg-white rounded">
         <thead>
         <tr>
-            <th scope="col">Title</th>
             <th scope="col">Author</th>
+            <th scope="col">Title</th>
             <th scope="col">Publisher</th>
+            <th scope="col"></th>
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        {% for object in object_list %}
-        <tr data-catid="{{ object.id }}" class="details">
-            <th scope="col">{{object.title}}</th>
-            <th scope="col">{{object.author}}</th>
-            <th scope="col">{{object.publisher}}</th>
-            <th scope="col">
+        <form action="{% url 'usergivebackmanybooks' %}" method="get">
+            {% for object in object_list %}
+            <tr>
+                <th>{{object.author}}</th>
+                <th data-catid="{{ object.id }}" class="details">{{object.title}}</th>
+                <th>{{object.publisher}}</th>
+                <th>
                 <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip"
                       title="Give back">
                     <i class="fa fa-undo"></i>
                 </span>
-            </th>
-        </tr>
-        {% empty %}
-        <tr>
-            <th colspan="4" class="text-center">Empty</th>
-        </tr>
+                </th>
+                {% if object_list.count <= 1 %}
+                <th>
+                    <label class="switch m-2">
+                            <input class="check" type="checkbox" name="whichbookreturn" value="{{ object.id }}" disabled>
+                            <span class="slider round"></span>
+                        </label>
+                </th>
+                {% else %}
+                <th>
+                        <label class="switch m-2">
+                            <input class="check" type="checkbox" name="whichbookreturn" value="{{ object.id }}">
+                            <span class="slider round"></span>
+                        </label>
+                </th>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <th colspan="4" class="text-center">Empty</th>
+            </tr>
+            {% endfor %}
         </tbody>
-        {% endfor %}
     </table>
+    <button type="submit" class="btn btn-danger" data-toggle="tooltip" title="Return books">
+        <i class="fa fa-undo mr-1"></i><span class="returnbooks">Return all books</span>
+    </button>
+    </form>
 </div>
 {% endblock %}
