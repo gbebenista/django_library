@@ -1,5 +1,5 @@
 {% extends 'users/index.html' %}
-
+{% load socialaccount %}
 {% load crispy_forms_tags %}
 
 {% block title %}Login{% endblock %}
@@ -12,7 +12,12 @@
     {% crispy form %}
   </form>
   <p class="mt-3 text-center w-100"><a href="{% url 'password_reset' %}">Forgot password?</a></p>
-  <h5 class="text-center font-weight-light pt-4">Are you new here? Create an <a href="{% url 'register' %}">account</a>!</h5>
+  <p class="text-center font-weight-light pt-4 h5">Are you new here? Create an <a href="{% url 'register' %}">account</a>!</p>
+  <p class="h5 text-center btn btn-primary w-100">
+    <a href="{% provider_login_url 'google' %}" class="text-white text-decoration-none">
+      Login with <i class="fab fa-google"></i>
+    </a>
+  </p>
 </div>
 
 

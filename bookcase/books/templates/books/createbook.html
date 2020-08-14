@@ -1,0 +1,14 @@
+{% extends 'books/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Create book{% endblock %}
+{% block content %}
+<div class="shadow bg-white rounded p-4 m-auto w-50 font-weight-light">
+    <h3 class="text-center mb-4">Add book</h3>
+    <form method="post">
+        {% csrf_token %}
+        {% crispy form %}
+    </form>
+</div>
+{% endblock %}

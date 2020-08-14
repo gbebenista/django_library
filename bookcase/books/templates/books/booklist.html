@@ -1,0 +1,115 @@
+{% extends 'books/base.html' %}
+{% block title %}Books list{% endblock %}
+{% block javascript %}
+{% endblock %}
+{% load filter %}
+{% block content %}
+{% csrf_token %}
+<div class="p-4 m-auto h5 font-weight-light">
+    {% if user.is_superuser == True %}
+    <a href="{% url 'addbook' %}" class="btn btn-info text-white text-decoration-none m-2"><i
+            class="fa fa-plus-square mr-2"></i>ADD BOOK</a>
+    {% endif %}
+    <div class="shadow bg-white rounded">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Author</th>
+                <th scope="col">Title</th>
+                <th scope="col">Publisher</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+                {% if perms.books.delete_book %}
+                <th scope="col"></th>
+                {% endif %}
+                {% if perms.books.change_book %}
+                <th scope="col"></th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in page_obj %}
+            <tr data-catid="{{ book.id }}" class="details">
+                <th>{{ book.author }}</th>
+                <th>{{ book.title}}</th>
+                <th>{{ book.publisher }}</th>
+                {% if book.userbasket_set|userbasket:user.id %}
+                <th>
+                    <span class="text-warning font-weight-normal" id="status{{ book.id }}">In basket</span>
+                </th>
+                <th>
+                    <span class="basket btn btn-warning disabled" data-toggle="tooltip" title="In basket"
+                          data-catid="{{ book.id }}" id="basket{{ book.id }}">
+                        <i class="fa fa-shopping-basket"></i>
+                    </span>
+                </th>
+                {% elif book.is_loaned == False %}
+                <th>
+                    <span class="text-success font-weight-normal" id="status{{ book.id }}">Available</span>
+                </th>
+                <th>
+                    <span class="basket btn btn-success" data-toggle="tooltip" title="Add to basket"
+                          data-catid="{{ book.id }}" id="basket{{ book.id }}">
+                        <i class="fa fa-shopping-basket"></i>
+                    </span>
+                </th>
+                {% else %}
+                <th>
+                    <span class="status text-danger font-weight-normal">Loaned</span>
+                </th>
+                <th>
+                    <span class="basket btn btn-danger disabled" data-toggle="tooltip" title="Add to basket">
+                        <i class="fa fa-shopping-basket"></i>
+                    </span>
+                </th>
+                {% endif %}
+                {% if perms.books.delete_book %}
+                <th>
+                    <a href="{% url 'deletebook' book.id %}" class="btn btn-danger" data-toggle="tooltip"
+                       title="Delete book">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </th>
+                {% endif %}
+                {% if perms.books.change_book %}
+                <th>
+                    <a href="{% url 'updatebook' book.id %}" class="btn btn-info" data-toggle="tooltip"
+                       title="Edit book">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </th>
+                {% endif %}
+            </tr>
+            </tbody>
+            {% empty %}
+            <tr>
+                <th colspan="7" class="text-center">Empty</th>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="pagination d-flex justify-content-center">
+        <span class="step-links">
+            {% if page_obj.number == 1 %}
+            <a href="#" class="btn btn-info disabled">&laquo; first</a>
+            <a href="#" class="btn btn-info disabled">previous</a>
+            {% endif %}
+            {% if page_obj.has_previous %}
+                <a href="?page=1" class="btn btn-info">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-info">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}" class="btn btn-info">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-info">last &raquo;</a>
+            {% endif %}
+            {% if page_obj.number == page_obj.paginator.num_pages %}
+                <a href="#" class="btn btn-info disabled">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-info disabled">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}

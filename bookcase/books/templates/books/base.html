@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap/js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script defer src="{% static 'fontawesome/js/all.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/books.js' %}"></script>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <style>
+    </style>
+</head>
+{% csrf_token %}
+<body class="bg-light">
+<header class="shadow bg-dark text-white row mb-4 p-2">
+    <h3 class="font-weight-light text-center col-2 m-auto">
+        <a href="{% url 'home' %}" class="text-white text-decoration-none"><i class="fa fa-book-reader mr-1"></i>Bookcase</a>
+    </h3>
+    <form action="{% url 'home' %}" method="get" class="col-6 m-auto">
+        <div class="input-group">
+            <input name="search" type="text" class="form-control"
+                   placeholder="Search book by author, title, publisher, tags... "/>
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </form>
+    <div class="col-2 text-center m-auto">
+        <div class="dropdown">
+            <button type="button" class="btn btn-dark dropdown-toggle text-muted m-auto" data-toggle="dropdown">
+                {{user.username}}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="{% url 'userbooks' %}">Your books</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+    {% if is_userbasket_exist == False %}
+    <a class="col-1 m-auto btn btn-dark disabled" href="{% url 'basketlist' user.id %}" id="userbasket"
+       data-toggle="tooltip" title="Your basket">
+        {% else %}
+        <a class="col-1 m-auto btn btn-dark" href="{% url 'basketlist' user.id %}" id="userbasket" data-toggle="tooltip"
+           title="Your basket">
+            {% endif %}
+            <i class="fa fa-shopping-basket h4 m-auto"></i>
+        </a>
+</header>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+<script>
+{% block javascript %}
+{% endblock %}
+</script>
+</body>
+</html>

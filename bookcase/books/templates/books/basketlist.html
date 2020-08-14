@@ -1,0 +1,49 @@
+{% extends 'books/base.html' %}
+{% block title %}Basket{% endblock %}
+{% block javascript %}
+{% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="p-4 m-auto h5">
+    <p class="text-center">Your basket</p>
+    <table class="table shadow bg-white rounded">
+        {% for object in object_list %}
+        <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Publisher</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for books in object.books.all %}
+        {% if books.is_loaned == True %}
+        <tr>
+            <th colspan="4" data-loaned="true" class="text-danger text-center warning">
+                Book: "{{ books.title }}" has been already borrowed by another user. Please remove it from the basket
+            </th>
+        </tr>
+        <tr class="text-muted">
+            {% else %}
+        <tr data-catid="{{ books.id }}" class="details">
+            {% endif %}
+            <th scope="col">{{books.title}}</th>
+            <th scope="col">{{books.author}}</th>
+            <th scope="col">{{books.publisher}}</th>
+            <th scope="col">
+                <span class="btn btn-danger deletefrombasket" data-catid="{{books.id}}" data-toggle="tooltip"
+                      title="Delete from basket">
+                    <i class="fa fa-minus-circle"></i>
+                </span>
+            </th>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+    <a href="{% url 'setloaned' %}" class="btn btn-info borrow" data-toggle="tooltip" title="Borrow book!">Borrow</a>
+    {% empty %}
+    <p class="text-center"> Your basket has been deleted </p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -16,10 +16,5 @@ class RegisterView(CreateView):
 class ViewLogin(LoginView):
     redirect_authenticated_user = True
     form_class = UserLogin
-    succes_url = reverse_lazy('home')
+    succes_url = reverse_lazy('bookslist')
     template_name = 'registration/login.html'
-
-
-class HomeView(LoginRequiredMixin, TemplateView):
-    login_url = reverse_lazy('login')
-    template_name = 'users/home.html'

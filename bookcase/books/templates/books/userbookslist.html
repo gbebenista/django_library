@@ -1,0 +1,39 @@
+{% extends 'books/base.html' %}
+{% block title %}Your books{% endblock %}
+{% block javascript %}
+{% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="p-4 m-auto h5 font-weight-light">
+    <p class="text-center">Your books</p>
+    <table class="table shadow bg-white rounded">
+        <thead>
+        <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Publisher</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+        <tr data-catid="{{ object.id }}" class="details">
+            <th scope="col">{{object.title}}</th>
+            <th scope="col">{{object.author}}</th>
+            <th scope="col">{{object.publisher}}</th>
+            <th scope="col">
+                <span class="btn btn-info giveback" data-catid="{{ object.id }}" data-toggle="tooltip"
+                      title="Give back">
+                    <i class="fa fa-undo"></i>
+                </span>
+            </th>
+        </tr>
+        {% empty %}
+        <tr>
+            <th colspan="4" class="text-center">Empty</th>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
