@@ -54,18 +54,21 @@ $(document).on("click", ".basket", function(event){
         dataType: 'json',
         success: function(data){
             if (data.success){
-                if ($('#status'+bookid).hasClass('text-success')){
+                if ($('#basket'+bookid).hasClass('btn-success')){
+                    $('#detail'+bookid).text("In basket");
                     $('#status'+bookid).text("In basket");
                     $('#status'+bookid).removeClass('text-success');
                     $('#status'+bookid).addClass('text-warning');
-                    $('#basket'+bookid).addClass('btn btn-warning disabled');
+                    $('#basket'+bookid).addClass('btn-warning disabled');
+                    $('#basket'+bookid).removeClass('btn-success');
                 }
                 else{
+                    $('#detail'+bookid).text("Available");
                     $('#status'+bookid).text("Available");
                     $('#status'+bookid).removeClass('text-warning');
                     $('#status'+bookid).addClass('text-success');
-                    $('#basket'+bookid).removeClass('btn btn-warning disabled');
-                    $('#basket'+bookid).addClass('btn btn-succes');
+                    $('#basket'+bookid).removeClass('btn-warning disabled');
+                    $('#basket'+bookid).addClass('btn-success');
                 }
                 if($('#userbasket').hasClass('disabled')){
                     $('#userbasket').removeClass('disabled');

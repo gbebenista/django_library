@@ -19,12 +19,12 @@
         {% if book.userbasket_set|userbasket:user.id %}
         <span class="basket btn btn-warning disabled" data-toggle="tooltip" title="In basket"
               data-catid="{{ book.id }}" id="basket{{ book.id }}">
-                        <i class="fa fa-shopping-basket mr-1"></i>In basket
+                        <i class="fa fa-shopping-basket mr-1"></i><span id="detail{{ book.id }}">In basket</span>
         </span>
         {% elif book.is_loaned == False %}
         <span class="basket btn btn-success" data-toggle="tooltip" title="Add to basket"
               data-catid="{{ book.id }}" id="basket{{ book.id }}">
-                        <i class="fa fa-shopping-basket mr-1"></i>Available
+                        <i class="fa fa-shopping-basket mr-1"></i><span id="detail{{ book.id }}">Available</span>
         </span>
         {% endif %}
     <p>
